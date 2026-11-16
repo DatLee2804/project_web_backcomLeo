@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 280" fill="none">
+  <rect width="480" height="280" rx="18" fill="#050D1A" stroke="rgba(0,194,255,0.22)"/>
+  <rect x="36" y="36" width="210" height="208" rx="14" fill="#09182C" stroke="#00C2FF" stroke-opacity="0.45"/>
+  <text x="54" y="68" fill="#5CE6FF" font-family="monospace" font-size="12" font-weight="700">MT5 RISK HUD</text>
+  <text x="54" y="100" fill="#F2F8FF" font-family="monospace" font-size="11">Symbol: XAUUSD</text>
+  <text x="54" y="126" fill="#94A8C4" font-family="monospace" font-size="11">Live Spread: Active</text>
+  <text x="54" y="152" fill="#10E5A3" font-family="monospace" font-size="11">Next Bar: 04m 18s</text>
+  <text x="54" y="178" fill="#94A8C4" font-family="monospace" font-size="11">Risk/Trade: 1.00%</text>
+  <path d="M275 190 L320 150 L360 168 L415 95 L445 110" stroke="#00C2FF" stroke-width="2.8" stroke-linecap="round"/>
+</svg>

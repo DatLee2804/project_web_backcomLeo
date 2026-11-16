@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 280" fill="none">
+  <rect width="480" height="280" rx="18" fill="#050D1A" stroke="rgba(0,194,255,0.22)"/>
+  <rect x="40" y="45" width="400" height="36" rx="6" fill="#FF5A6E" fill-opacity="0.16" stroke="#FF5A6E" stroke-opacity="0.5"/>
+  <text x="54" y="67" fill="#FF5A6E" font-family="monospace" font-size="10">UNMITIGATED SUPPLY ZONE</text>
+  <rect x="40" y="195" width="400" height="38" rx="6" fill="#00C2FF" fill-opacity="0.16" stroke="#00C2FF" stroke-opacity="0.5"/>
+  <text x="54" y="218" fill="#5CE6FF" font-family="monospace" font-size="10">ACTIVE DEMAND / ORDER BLOCK</text>
+  <path d="M60 170 L130 75 L200 155 L285 208 L365 115 L425 135" stroke="#38F2FF" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

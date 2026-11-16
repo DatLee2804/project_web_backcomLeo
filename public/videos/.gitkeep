@@ -1,0 +1,2 @@
+# Đặt video quảng cáo dọc (9:16, ví dụ: promo.mp4) vào thư mục này
+# Sau đó gán videoSrc: "/videos/promo.mp4" trong src/data/hero-media.ts

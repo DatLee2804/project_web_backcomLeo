@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #03070e;
+    color: #f2f8ff;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: #03070e;
+    color: #f2f8ff;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: rgba(0, 194, 255, 0.28);
+    color: #67e8f9;
+  }
+}
+
+@layer utilities {
+  .tabular-nums-fin {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.015em;
+  }
+
+  /* Cyber Tech Dot Matrix like Images 1-4 */
+  .bg-trading-grid {
+    background-size: 26px 26px;
+    background-image: radial-gradient(
+      rgba(56, 214, 255, 0.13) 1px,
+      transparent 1px
+    );
+  }
+
+  /* Subtle Architectural Grid Overlay */
+  .bg-cyber-lines {
+    background-size: 56px 56px;
+    background-image: linear-gradient(
+        to right,
+        rgba(0, 194, 255, 0.045) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(0, 194, 255, 0.045) 1px,
+        transparent 1px
+      );
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #7ef3ff 0%, #00c2ff 50%, #2b8aff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-vip-gradient {
+    background: linear-gradient(135deg, #fde08d 0%, #f5b942 60%, #d98a16 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gold-hairline {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 194, 255, 0.55) 50%,
+      transparent 100%
+    );
+  }
+
+  .tech-glass-panel {
+    background: linear-gradient(
+      180deg,
+      rgba(11, 27, 48, 0.88) 0%,
+      rgba(5, 13, 24, 0.94) 100%
+    );
+    box-shadow:
+      0 20px 50px -15px rgba(0, 0, 0, 0.85),
+      inset 0 1px 0 0 rgba(103, 232, 249, 0.14);
+  }
+
+  .marquee-mask {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
+  .animate-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: broker-marquee 28s linear infinite;
+  }
+
+  .animate-marquee-track:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes broker-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

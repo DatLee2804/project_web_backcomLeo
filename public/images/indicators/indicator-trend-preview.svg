@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 280" fill="none">
+  <rect width="480" height="280" rx="18" fill="#050D1A" stroke="rgba(0,194,255,0.22)"/>
+  <path d="M30 210 Q140 190 230 135 T445 65" stroke="#00C2FF" stroke-width="2.8" fill="none"/>
+  <path d="M30 225 Q150 210 245 160 T445 95" stroke="#10E5A3" stroke-width="1.6" stroke-dasharray="4 4" fill="none"/>
+  <rect x="295" y="152" width="156" height="98" rx="12" fill="#09182C" stroke="rgba(0,194,255,0.35)"/>
+  <text x="312" y="176" fill="#5CE6FF" font-family="monospace" font-size="10" font-weight="700">MTF MATRIX</text>
+  <text x="312" y="196" fill="#10E5A3" font-family="monospace" font-size="10">M15: BULLISH ▲</text>
+  <text x="312" y="214" fill="#10E5A3" font-family="monospace" font-size="10">H1 : BULLISH ▲</text>
+  <text x="312" y="232" fill="#38F2FF" font-family="monospace" font-size="10">H4 : PULLBACK •</text>
+</svg>
