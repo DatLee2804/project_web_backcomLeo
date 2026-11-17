@@ -63,7 +63,11 @@ export function Header() {
   const isRouteActive = (href: string) => {
     if (href === "/") return pathname === "/";
     if (href === "/tools") {
-      return pathname === "/tools" || pathname === "/tools/indicators";
+      return (
+        pathname === "/tools" ||
+        pathname === "/tools/indicators" ||
+        pathname.startsWith("/tools/indicators/")
+      );
     }
     if (href === "/backcom" && pathname === "/tools/calculator") {
       return true;

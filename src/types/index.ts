@@ -151,13 +151,33 @@ export interface TradingRobot {
 
 export interface TradingIndicator {
   id: string;
+  slug: string;
   name: string;
   platform: "TradingView" | "MT5" | "MT4/MT5";
   category: string;
   status: ConfigStatus;
+  subtitle: string;
   summary: string;
   features: string[];
   previewImage: string;
+  targetMarkets: string[];
+  recommendedTimeframes: string[];
+  introduction: string[];
+  howItWorks: {
+    title: string;
+    description: string;
+  }[];
+  parameters: {
+    label: string;
+    value: string;
+  }[];
+  installationSteps: {
+    step: number;
+    title: string;
+    description: string;
+  }[];
+  usageNotes: string[];
+  faqs: FaqItem[];
 }
 
 export interface EquityPoint {

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/seo";
 import { brokers } from "@/data/brokers";
 import { masterTraders } from "@/data/masters";
+import { tradingIndicators } from "@/data/indicators";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_CONFIG.domain;
@@ -48,6 +49,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.65,
   }));
 
-  return [...staticEntries, ...brokerEntries, ...masterEntries];
+  const indicatorEntries: MetadataRoute.Sitemap = tradingIndicators.map(
+    (ind) => ({
+      url: `${baseUrl}/tools/indicators/${ind.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    })
+  );
+
+  return [
+    ...staticEntries,
+    ...brokerEntries,
+    ...indicatorEntries,
+    ...masterEntries,
+  ];
 }
 

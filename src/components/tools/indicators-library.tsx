@@ -44,7 +44,10 @@ export function IndicatorsLibrary() {
             key={ind.id}
             className="flex flex-col overflow-hidden"
           >
-            <div className="border-b border-line bg-[#0B0F18] p-4">
+            <Link
+              href={`/tools/indicators/${ind.slug}`}
+              className="block border-b border-line bg-[#050D1A] p-4 transition-opacity hover:opacity-95"
+            >
               <Image
                 src={ind.previewImage}
                 alt={`Hình minh họa chỉ báo ${ind.name}`}
@@ -52,7 +55,7 @@ export function IndicatorsLibrary() {
                 height={280}
                 className="h-48 w-full rounded-xl object-cover"
               />
-            </div>
+            </Link>
 
             <div className="flex flex-1 flex-col justify-between p-6">
               <div>
@@ -62,7 +65,12 @@ export function IndicatorsLibrary() {
                 </div>
 
                 <h3 className="mt-4 font-heading text-xl font-bold text-ink-primary">
-                  {ind.name}
+                  <Link
+                    href={`/tools/indicators/${ind.slug}`}
+                    className="transition-colors hover:text-gold-light"
+                  >
+                    {ind.name}
+                  </Link>
                 </h3>
                 <div className="mt-1 text-xs font-medium text-gold-light">
                   Phân nhóm: {ind.category}
@@ -72,7 +80,7 @@ export function IndicatorsLibrary() {
                 </p>
 
                 <ul className="mt-5 space-y-2 border-t border-line pt-4">
-                  {ind.features.map((f) => (
+                  {ind.features.slice(0, 3).map((f) => (
                     <li
                       key={f}
                       className="flex items-start gap-2 text-xs text-ink-secondary"
@@ -84,16 +92,24 @@ export function IndicatorsLibrary() {
                 </ul>
               </div>
 
-              <div className="mt-6 pt-2">
+              <div className="mt-6 flex flex-wrap gap-2.5 pt-2">
+                <Link
+                  href={`/tools/indicators/${ind.slug}`}
+                  className={cn(
+                    buttonVariants({ variant: "primary", size: "md" }),
+                    "flex-1"
+                  )}
+                >
+                  <span>Xem chi tiết thông số &amp; Hướng dẫn</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
                 <Link
                   href="/contact"
                   className={cn(
-                    buttonVariants({ variant: "secondary", size: "md" }),
-                    "w-full justify-between"
+                    buttonVariants({ variant: "outline", size: "md" })
                   )}
                 >
-                  <span>Đăng ký nhận quyền truy cập chỉ báo</span>
-                  <ArrowRight className="h-4 w-4 text-gold" />
+                  Đăng ký cấp quyền
                 </Link>
               </div>
             </div>
@@ -103,4 +119,3 @@ export function IndicatorsLibrary() {
     </div>
   );
 }
-
