@@ -17,14 +17,14 @@ import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Giải pháp Robot Trading & Expert Advisor (EA MT5)",
+  title: "Bot Trading & Giải pháp Expert Advisor (EA MT5)",
   description:
-    "Giải pháp giao dịch tự động hóa trên nền tảng MetaTrader 5 thuộc hệ sinh thái Backcom Mr Leo — sản phẩm chủ lực AMIX TRADE – GOLD CENT BOT.",
+    "Danh mục các sản phẩm Bot Trading tự động hóa trên nền tảng MetaTrader 5 thuộc hệ sinh thái Backcom Mr Leo — nổi bật với AMIX TRADE – GOLD CENT BOT.",
   path: "/robots",
 });
 
 export default function RobotsPage() {
-  const mainRobot = tradingRobots[0];
+  const firstBot = tradingRobots[0];
 
   return (
     <div className="bg-background">
@@ -33,110 +33,120 @@ export default function RobotsPage() {
         <div className="pointer-events-none absolute inset-0 bg-trading-grid opacity-55" />
         <div className="container relative z-10">
           <div className="max-w-3xl">
-            <Badge variant="gold">ALGORITHMIC TRADING</Badge>
+            <Badge variant="gold">ALGORITHMIC BOT TRADING</Badge>
             <h1 className="mt-4 font-heading text-3xl font-bold tracking-tight text-ink-primary sm:text-5xl">
               AUTOMATED TRADING SOLUTIONS
             </h1>
             <p className="mt-4 text-base leading-relaxed text-ink-secondary sm:text-lg">
-              Ứng dụng phần mềm giao dịch tự động (Expert Advisor) trên nền tảng
-              MetaTrader 5 nhằm chuẩn hóa quy tắc quản lý vị thế, giảm thiểu sai
-              lầm cảm tính và cộng hưởng tối ưu cùng cơ chế hoàn phí Backcom.
+              Ứng dụng hệ thống Bot giao dịch tự động (Expert Advisor) trên nền
+              tảng MetaTrader 5 nhằm chuẩn hóa quy tắc quản lý vị thế, giảm
+              thiểu sai lầm cảm tính và cộng hưởng tối ưu cùng cơ chế hoàn phí
+              Backcom.
             </p>
             <div className="mt-7 flex flex-wrap gap-3.5">
-              <Link
-                href={`/robots/${mainRobot.slug}`}
-                className={cn(
-                  buttonVariants({ variant: "primary", size: "lg" })
-                )}
-              >
-                Khám phá {mainRobot.shortName}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              {firstBot && (
+                <a
+                  href="#bot-list"
+                  className={cn(
+                    buttonVariants({ variant: "primary", size: "lg" })
+                  )}
+                >
+                  Xem danh sách Bot Trading
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              )}
               <Link
                 href="/contact"
                 className={cn(
                   buttonVariants({ variant: "secondary", size: "lg" })
                 )}
               >
-                Tư vấn hạ tầng EA &amp; VPS
+                Tư vấn hạ tầng Bot &amp; VPS
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Product Spotlight */}
-      <section className="border-b border-line py-16 sm:py-20">
+      {/* Bot List Showcase */}
+      <section id="bot-list" className="scroll-mt-24 border-b border-line py-16 sm:py-20">
         <div className="container">
           <SectionHeading
-            eyebrow="FLAGSHIP EXPERT ADVISOR"
-            title={mainRobot.name}
-            subtitle={mainRobot.subtitle}
+            eyebrow="BOT TRADING CATALOG"
+            title="Các dòng Bot Trading trong Hệ sinh thái"
+            subtitle="Chọn xem chi tiết thông số kỹ thuật, yêu cầu tài khoản và quy trình cài đặt cho từng con Bot."
           />
 
-          <div className="mt-12 overflow-hidden rounded-card-lg border border-gold/45 bg-card p-6 shadow-gold sm:p-10">
-            <div className="grid items-center gap-10 lg:grid-cols-12">
-              <div className="lg:col-span-6">
-                <Image
-                  src={mainRobot.heroImage}
-                  alt={`Giao diện minh họa ${mainRobot.name}`}
-                  width={640}
-                  height={400}
-                  className="w-full rounded-card border border-line"
-                />
-              </div>
+          <div className="mt-12 space-y-10">
+            {tradingRobots.map((bot) => (
+              <div
+                key={bot.slug}
+                className="overflow-hidden rounded-card-lg border border-gold/45 bg-card p-6 shadow-gold sm:p-10"
+              >
+                <div className="grid items-center gap-10 lg:grid-cols-12">
+                  <div className="lg:col-span-6">
+                    <Image
+                      src={bot.heroImage}
+                      alt={`Giao diện minh họa ${bot.name}`}
+                      width={640}
+                      height={400}
+                      className="w-full rounded-card border border-line"
+                    />
+                  </div>
 
-              <div className="lg:col-span-6">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="featured">{mainRobot.badge}</Badge>
-                  <Badge variant="gold">XAUUSDc • Cent Structure</Badge>
+                  <div className="lg:col-span-6">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="featured">{bot.badge}</Badge>
+                      <Badge variant="gold">XAUUSDc • Cent Structure</Badge>
+                    </div>
+
+                    <h2 className="mt-4 font-heading text-2xl font-bold text-ink-primary sm:text-3xl">
+                      {bot.name}
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-secondary sm:text-base">
+                      {bot.introduction[0]}
+                    </p>
+
+                    <ul className="mt-5 space-y-2.5">
+                      {bot.features.map((feat) => (
+                        <li
+                          key={feat.title}
+                          className="flex items-start gap-2.5 text-sm text-ink-primary"
+                        >
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                          <span>
+                            <strong>{feat.title}:</strong>{" "}
+                            <span className="text-ink-secondary">
+                              {feat.description}
+                            </span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-7 flex flex-wrap gap-3">
+                      <Link
+                        href={`/robots/${bot.slug}`}
+                        className={cn(
+                          buttonVariants({ variant: "primary", size: "md" })
+                        )}
+                      >
+                        Xem chi tiết thông số &amp; Hướng dẫn
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                      <Link
+                        href="/contact"
+                        className={cn(
+                          buttonVariants({ variant: "outline", size: "md" })
+                        )}
+                      >
+                        Liên hệ cấp quyền Bot
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-
-                <h2 className="mt-4 font-heading text-2xl font-bold text-ink-primary sm:text-3xl">
-                  {mainRobot.name}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-ink-secondary sm:text-base">
-                  {mainRobot.introduction[0]}
-                </p>
-
-                <ul className="mt-5 space-y-2.5">
-                  {mainRobot.features.map((feat) => (
-                    <li
-                      key={feat.title}
-                      className="flex items-start gap-2.5 text-sm text-ink-primary"
-                    >
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                      <span>
-                        <strong>{feat.title}:</strong>{" "}
-                        <span className="text-ink-secondary">
-                          {feat.description}
-                        </span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Link
-                    href={`/robots/${mainRobot.slug}`}
-                    className={cn(
-                      buttonVariants({ variant: "primary", size: "md" })
-                    )}
-                  >
-                    Xem chi tiết thông số &amp; Hướng dẫn
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className={cn(
-                      buttonVariants({ variant: "outline", size: "md" })
-                    )}
-                  >
-                    Liên hệ cấp quyền EA
-                  </Link>
-                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -161,7 +171,7 @@ export default function RobotsPage() {
                 Vận hành trên hạ tầng VPS riêng
               </h3>
               <p className="mt-2 text-sm text-ink-secondary">
-                EA chạy trực tiếp trên tài khoản MT5 cá nhân của khách hàng đặt
+                Bot chạy trực tiếp trên tài khoản MT5 cá nhân của khách hàng đặt
                 trên VPS, đảm bảo quyền tự chủ hoàn toàn về vốn và thiết lập.
               </p>
             </Card>
@@ -182,7 +192,7 @@ export default function RobotsPage() {
               <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
               <div>
                 <strong className="text-ink-primary">
-                  Tuyên bố rủi ro Robot Trading:
+                  Tuyên bố rủi ro Bot Trading:
                 </strong>{" "}
                 Mọi phần mềm giao dịch tự động đều tồn tại rủi ro thua lỗ khi thị
                 trường biến động vượt ngoài biên độ thiết kế. Backcom Mr Leo
@@ -196,4 +206,3 @@ export default function RobotsPage() {
     </div>
   );
 }
-

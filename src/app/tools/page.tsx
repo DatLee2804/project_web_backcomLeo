@@ -1,162 +1,205 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  BarChart2,
-  Calculator,
-  Gauge,
-  Terminal,
+  Download,
+  Eye,
+  Layers,
+  MessageCircle,
 } from "lucide-react";
+import { IndicatorsLibrary } from "@/components/tools/indicators-library";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
-import { InteractiveCard } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
-import { constructMetadata } from "@/lib/seo";
+import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Công cụ Trading & Hệ thống Chỉ báo (Trading Tools & Indicators)",
+  title: "Công cụ Trading — Thư viện Chỉ báo TradingView & MT5",
   description:
-    "Bộ công cụ hỗ trợ nhà giao dịch trong hệ sinh thái Backcom Mr Leo: Backcom Calculator, TradingView Indicators, MT5 Indicators và định hướng công cụ quản trị rủi ro.",
+    "Khám phá bộ chỉ báo phân tích kỹ thuật TradingView và MetaTrader 5 hỗ trợ nhận diện phiên giao dịch, thanh khoản và quản trị rủi ro tại Backcom Mr Leo.",
   path: "/tools",
 });
-
-const TOOL_CARDS = [
-  {
-    title: "Backcom Calculator",
-    statusLabel: "Hoạt động trực tuyến",
-    statusVariant: "success" as const,
-    icon: Calculator,
-    description:
-      "Ước tính trực quan khoản hoàn phí giao dịch hàng tháng và hàng năm theo từng sàn, loại tài khoản (ưu tiên Austex STD05) và mô hình tính phí.",
-    href: "/tools/calculator",
-    cta: "Mở công cụ tính Backcom",
-  },
-  {
-    title: "TradingView Indicators",
-    statusLabel: "Thư viện thành viên",
-    statusVariant: "gold" as const,
-    icon: BarChart2,
-    description:
-      "Các chỉ báo hỗ trợ nhận diện biên độ phiên Á – Âu – Mỹ, vùng thanh khoản và ma trận đồng thuận xu hướng đa khung thời gian trên TradingView.",
-    href: "/tools/indicators",
-    cta: "Xem thư viện chỉ báo",
-  },
-  {
-    title: "MT5 Indicators",
-    statusLabel: "Tiện ích MetaTrader",
-    statusVariant: "gold" as const,
-    icon: Terminal,
-    description:
-      "Bộ tiện ích hiển thị thông số Spread thực tế, đếm ngược đóng nến và đánh dấu vùng cung cầu trực tiếp trên nền tảng MetaTrader 4 / MetaTrader 5.",
-    href: "/tools/indicators#mt5-indicators",
-    cta: "Xem tiện ích MT5",
-  },
-  {
-    title: "Risk Calculator",
-    statusLabel: "Lộ trình mở rộng",
-    statusVariant: "pending" as const,
-    icon: Gauge,
-    description:
-      "Mô-đun tính toán khối lượng vào lệnh (Lot Size) theo phần trăm rủi ro tài khoản và khoảng cách Stop Loss — đang được chuẩn hóa cho bản cập nhật tiếp theo.",
-    href: "/tools/calculator#roadmap",
-    cta: "Xem lộ trình phát triển",
-  },
-];
 
 export default function ToolsPage() {
   return (
     <div className="bg-background">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-line bg-background-secondary py-16 sm:py-20">
+      {/* 1. Hero */}
+      <section className="relative overflow-hidden border-b border-line bg-background-secondary py-14 sm:py-18">
         <div className="pointer-events-none absolute inset-0 bg-trading-grid opacity-55" />
         <div className="container relative z-10">
           <div className="max-w-3xl">
-            <Badge variant="gold">TRADER UTILITY SUITE</Badge>
+            <Badge variant="gold">TECHNICAL INDICATOR SUITE</Badge>
             <h1 className="mt-4 font-heading text-3xl font-bold tracking-tight text-ink-primary sm:text-5xl">
-              TRADING TOOLS &amp; INDICATORS
+              Thư viện Chỉ báo TradingView &amp; MT5
             </h1>
             <p className="mt-4 text-base leading-relaxed text-ink-secondary sm:text-lg">
-              Chuẩn hóa quy trình phân tích biểu đồ, kiểm soát chi phí giao dịch
-              và nâng cao kỷ luật thực thi lệnh với hệ thống công cụ dành cho
-              cộng đồng Backcom Mr Leo.
+              Bộ công cụ trực quan hóa cấu trúc phiên giao dịch, vùng thanh
+              khoản và thông số rủi ro trực tiếp trên biểu đồ, thiết kế dành
+              riêng cho thành viên hệ sinh thái Backcom Mr Leo.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3.5">
-              <Link
-                href="/tools/calculator"
-                className={cn(
-                  buttonVariants({ variant: "primary", size: "lg" })
-                )}
-              >
-                Sử dụng Backcom Calculator
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/tools/indicators"
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "lg" })
-                )}
-              >
-                Khám phá Thư viện Indicators
-              </Link>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* 4 Tool Cards */}
-      <section className="py-16 sm:py-20">
+      {/* 2 & 3. Indicator Library & Preview */}
+      <section
+        id="mt5-indicators"
+        className="border-b border-line py-16 sm:py-20"
+      >
         <div className="container">
           <SectionHeading
-            eyebrow="CORE MODULES"
-            title="Danh mục Công cụ hỗ trợ Nhà giao dịch"
-            subtitle="Thiết kế tối giản, tập trung vào số liệu thực tế và khả năng ứng dụng hàng ngày."
+            align="left"
+            eyebrow="INDICATOR LIBRARY & PREVIEW"
+            title="Danh mục Chỉ báo & Minh họa Giao diện"
+            subtitle="Chọn nền tảng bạn đang sử dụng để lọc danh sách công cụ phù hợp."
+          />
+          <div className="mt-8">
+            <IndicatorsLibrary />
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Core Features */}
+      <section className="border-b border-line bg-background-secondary py-16 sm:py-20">
+        <div className="container">
+          <SectionHeading
+            eyebrow="DESIGN PRINCIPLES"
+            title="Đặc điểm nổi bật của bộ chỉ báo"
+          />
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <Card className="p-6">
+              <Eye className="h-6 w-6 text-gold" />
+              <h3 className="mt-4 font-heading text-lg font-bold text-ink-primary">
+                Giao diện sạch, không rối biểu đồ
+              </h3>
+              <p className="mt-2 text-sm text-ink-secondary">
+                Ưu tiên hiển thị các vùng giá và bảng thông số gọn gàng trên nền
+                tối, giữ nguyên sự tập trung vào hành động giá (Price Action).
+              </p>
+            </Card>
+            <Card className="p-6">
+              <Layers className="h-6 w-6 text-gold" />
+              <h3 className="mt-4 font-heading text-lg font-bold text-ink-primary">
+                Không vẽ lại tín hiệu quá khứ (Non-Repaint)
+              </h3>
+              <p className="mt-2 text-sm text-ink-secondary">
+                Các vùng biên độ phiên và xác nhận xu hướng đóng nến được cố
+                định minh bạch, phục vụ kiểm chứng chiến lược thực tế.
+              </p>
+            </Card>
+            <Card className="p-6">
+              <Download className="h-6 w-6 text-gold" />
+              <h3 className="mt-4 font-heading text-lg font-bold text-ink-primary">
+                Hỗ trợ cài đặt trực tiếp 1-1
+              </h3>
+              <p className="mt-2 text-sm text-ink-secondary">
+                Đi kèm tài liệu hướng dẫn thiết lập cảnh báo (Alert) trên
+                TradingView và cài đặt vào thư mục MQL5/Indicators trên máy tính.
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. How to Install */}
+      <section className="border-b border-line py-16 sm:py-20">
+        <div className="container">
+          <SectionHeading
+            eyebrow="INSTALLATION GUIDE"
+            title="Hướng dẫn kích hoạt & Cài đặt Chỉ báo"
           />
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {TOOL_CARDS.map((card) => {
-              const Icon = card.icon;
-              return (
-                <InteractiveCard
-                  key={card.title}
-                  className="flex flex-col justify-between p-6 sm:p-7"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gold/35 bg-gold/10 text-gold-light">
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <Badge variant={card.statusVariant}>
-                        {card.statusLabel}
-                      </Badge>
-                    </div>
+          <div className="mt-10 grid gap-8 lg:grid-cols-2">
+            <Card className="p-6 sm:p-8">
+              <Badge variant="gold">TRADINGVIEW (INVITE-ONLY)</Badge>
+              <h3 className="mt-3 font-heading text-xl font-bold text-ink-primary">
+                Cách kích hoạt chỉ báo trên TradingView
+              </h3>
+              <ol className="mt-4 space-y-3 text-sm text-ink-secondary">
+                <li>
+                  <strong className="text-ink-primary">Bước 1:</strong> Liên kết
+                  tài khoản giao dịch với một trong 5 sàn đối tác của Backcom Mr
+                  Leo.
+                </li>
+                <li>
+                  <strong className="text-ink-primary">Bước 2:</strong> Gửi
+                  Username TradingView và ID tài khoản sàn qua biểu mẫu Liên hệ
+                  hoặc nhóm Zalo.
+                </li>
+                <li>
+                  <strong className="text-ink-primary">Bước 3:</strong> Sau khi
+                  được cấp quyền, mở biểu đồ TradingView → mục{" "}
+                  <em>Indicators</em> → <em>Invite-only scripts</em> để thêm vào
+                  biểu đồ.
+                </li>
+              </ol>
+            </Card>
 
-                    <h2 className="mt-5 font-heading text-2xl font-bold text-ink-primary">
-                      {card.title}
-                    </h2>
-                    <p className="mt-2.5 text-sm leading-relaxed text-ink-secondary sm:text-base">
-                      {card.description}
-                    </p>
-                  </div>
+            <Card className="p-6 sm:p-8">
+              <Badge variant="gold">METATRADER 4 / METATRADER 5</Badge>
+              <h3 className="mt-3 font-heading text-xl font-bold text-ink-primary">
+                Cách cài đặt tiện ích trên MT4 / MT5
+              </h3>
+              <ol className="mt-4 space-y-3 text-sm text-ink-secondary">
+                <li>
+                  <strong className="text-ink-primary">Bước 1:</strong> Nhận gói
+                  tệp chỉ báo định dạng chuẩn (<code>.ex4</code> /{" "}
+                  <code>.ex5</code>) từ đội ngũ kỹ thuật.
+                </li>
+                <li>
+                  <strong className="text-ink-primary">Bước 2:</strong> Trên
+                  phần mềm MetaTrader, chọn <em>File → Open Data Folder</em> và
+                  dán tệp vào thư mục <code>MQL5/Indicators</code>.
+                </li>
+                <li>
+                  <strong className="text-ink-primary">Bước 3:</strong> Nhấp
+                  chuột phải vào cửa sổ <em>Navigator</em> chọn <em>Refresh</em>{" "}
+                  rồi kéo chỉ báo thả vào biểu đồ XAUUSD hoặc cặp tiền cần theo
+                  dõi.
+                </li>
+              </ol>
+            </Card>
+          </div>
+        </div>
+      </section>
 
-                  <div className="mt-6 pt-2">
-                    <Link
-                      href={card.href}
-                      className={cn(
-                        buttonVariants({ variant: "outline", size: "md" }),
-                        "w-full justify-between"
-                      )}
-                    >
-                      <span>{card.cta}</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </InteractiveCard>
-              );
-            })}
+      {/* 6. CTA */}
+      <section className="bg-background-secondary py-16 sm:py-20">
+        <div className="container">
+          <div className="mx-auto max-w-4xl rounded-card-lg border border-gold/40 bg-card p-8 text-center sm:p-10">
+            <h2 className="font-heading text-2xl font-bold text-ink-primary sm:text-3xl">
+              Đăng ký nhận quyền sử dụng Bộ chỉ báo Hệ sinh thái
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm text-ink-secondary sm:text-base">
+              Kết nối cùng đội ngũ Backcom Mr Leo để kiểm tra điều kiện cấp
+              quyền thành viên và nhận hướng dẫn cài đặt chi tiết.
+            </p>
+            <div className="mt-7 flex flex-wrap justify-center gap-3.5">
+              <Link
+                href="/contact"
+                className={cn(
+                  buttonVariants({ variant: "primary", size: "lg" })
+                )}
+              >
+                Gửi yêu cầu cấp quyền
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href={SITE_CONFIG.zaloGroupUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  buttonVariants({ variant: "secondary", size: "lg" })
+                )}
+              >
+                <MessageCircle className="h-4 w-4 text-gold" />
+                Tham gia nhóm Zalo hỗ trợ
+              </a>
+            </div>
           </div>
         </div>
       </section>
     </div>
   );
 }
-

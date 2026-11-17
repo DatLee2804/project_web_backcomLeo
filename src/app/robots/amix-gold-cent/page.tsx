@@ -40,7 +40,7 @@ export default function AmixGoldCentPage() {
             className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary transition-colors hover:text-gold-light"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Quay lại trang Robot Trading
+            Quay lại trang Bot Trading
           </Link>
 
           <div className="mt-6 grid items-center gap-10 lg:grid-cols-12">

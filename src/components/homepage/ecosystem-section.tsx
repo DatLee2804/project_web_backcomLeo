@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils";
 const ECOSYSTEM_PILLARS = [
   {
     badge: "AUTOMATED EA",
-    title: "ROBOT TRADING",
+    title: "BOT TRADING",
     description:
       "Giải pháp giao dịch tự động hóa trên MetaTrader 5 hỗ trợ thực thi kỷ luật và quản trị rủi ro theo cấu trúc vốn Cent.",
     items: ["Amix Trade", "Gold Cent Bot", "MT5 Expert Advisor"],
     image: "/images/robots/amix-gold-cent-preview.svg",
-    imageAlt: "Giao diện minh họa Robot Trading Amix Gold Cent Bot",
-    href: "/robots/amix-gold-cent",
-    cta: "Explore Robot EA",
+    imageAlt: "Giao diện minh họa Bot Trading Amix Gold Cent Bot",
+    href: "/robots",
+    cta: "Explore Bot Trading",
     icon: Bot,
   },
   {

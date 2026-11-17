@@ -16,11 +16,11 @@ export default function CalculatorPage() {
     <div className="bg-background py-12 sm:py-16 lg:py-20">
       <div className="container">
         <Link
-          href="/tools"
+          href="/backcom"
           className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary transition-colors hover:text-gold-light"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Quay lại trang Công cụ Trading
+          Quay lại trang Dịch vụ Backcom
         </Link>
 
         <div className="mt-6 max-w-3xl">

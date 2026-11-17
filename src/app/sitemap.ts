@@ -14,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/brokers",
     "/tools",
     "/tools/calculator",
-    "/tools/indicators",
     "/robots",
     "/robots/amix-gold-cent",
     "/copy-trading",
