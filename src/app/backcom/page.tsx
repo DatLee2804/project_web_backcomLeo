@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { BackcomCalculator } from "@/components/backcom/backcom-calculator";
 import { HowItWorksSection } from "@/components/homepage/how-it-works-section";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Accordion } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -192,11 +193,14 @@ export default async function BackcomPage() {
                     )}
                   >
                     <td className="px-5 py-4 font-heading font-bold text-ink-primary">
-                      <div className="flex items-center gap-2">
-                        <span>{broker.name}</span>
-                        {broker.featured && (
-                          <Badge variant="featured">FEATURED</Badge>
-                        )}
+                      <div className="flex items-center gap-3">
+                        <BrokerLogo broker={broker} size="xs" />
+                        <div className="flex items-center gap-2">
+                          <span>{broker.name}</span>
+                          {broker.featured && (
+                            <Badge variant="featured">FEATURED</Badge>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td className="px-5 py-4 text-ink-secondary">

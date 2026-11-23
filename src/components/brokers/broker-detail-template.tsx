@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -14,6 +13,7 @@ import {
 } from "lucide-react";
 import type { Broker } from "@/types";
 import { BackcomCalculator } from "@/components/backcom/backcom-calculator";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Accordion } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -67,13 +67,7 @@ export function BrokerDetailTemplate({
               </div>
 
               <div className="mt-5 flex flex-wrap items-center gap-4">
-                <Image
-                  src={broker.logo}
-                  alt={`Logo minh họa đối tác ${broker.name}`}
-                  width={176}
-                  height={52}
-                  className="h-12 w-auto"
-                />
+                <BrokerLogo broker={broker} size="lg" />
                 <h1 className="font-heading text-3xl font-bold tracking-tight text-ink-primary sm:text-5xl">
                   {broker.name}
                 </h1>

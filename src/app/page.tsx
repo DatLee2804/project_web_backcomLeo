@@ -48,6 +48,7 @@ export default async function HomePage() {
       <HeroSection
         heroContent={home.hero}
         promoVideo={home.promoVideo}
+        brokersList={brokers}
       />
 
       {/* HORIZONTAL SCROLLING BROKER LOGOS MARQUEE */}

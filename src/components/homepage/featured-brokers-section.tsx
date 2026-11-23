@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, ExternalLink, Lock, Sparkles } from "lucide-react";
 import { getOrderedBrokers } from "@/data/brokers";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -69,16 +69,7 @@ export function FeaturedBrokersSection({
                   )}
 
                   <div className="flex items-center gap-3.5 pl-1.5">
-                    <span
-                      className={cn(
-                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border font-heading text-xs font-extrabold",
-                        isSelected
-                          ? "border-gold bg-gold-gradient text-[#020813]"
-                          : "border-line-strong bg-[#071324] text-gold-light"
-                      )}
-                    >
-                      {broker.shortName.slice(0, 2).toUpperCase()}
-                    </span>
+                    <BrokerLogo broker={broker} size="xs" />
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-heading text-sm font-bold text-ink-primary sm:text-base">
@@ -122,13 +113,7 @@ export function FeaturedBrokersSection({
             {/* Top Broker Header */}
             <div className="relative flex flex-wrap items-start justify-between gap-4">
               <div className="flex items-center gap-4">
-                <Image
-                  src={activeBroker.logo}
-                  alt={`Logo minh họa ${activeBroker.name}`}
-                  width={154}
-                  height={44}
-                  className="h-11 w-auto"
-                />
+                <BrokerLogo broker={activeBroker} size="md" />
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <h3 className="font-heading text-2xl font-extrabold text-ink-primary">

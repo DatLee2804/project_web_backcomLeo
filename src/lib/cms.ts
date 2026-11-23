@@ -488,6 +488,19 @@ export async function deleteMaster(slug: string): Promise<void> {
 // ============================================================================
 // 4. BROKERS CRUD
 // ============================================================================
+const LEGACY_DEFAULT_LOGOS: Record<string, string> = {
+  "/images/brokers/austex.svg": "/images/brokers/austex-logo.png",
+  "/images/brokers/exness.svg": "/images/brokers/exness-logo.png",
+  "/images/brokers/tickmill.svg": "/images/brokers/tickmill-logo.png",
+  "/images/brokers/fxpro.svg": "/images/brokers/fxpro-logo.png",
+  "/images/brokers/bcr.svg": "/images/brokers/bcr-logo.png",
+};
+
+function normalizeBrokerLogo(broker: Broker): Broker {
+  const upgradedLogo = LEGACY_DEFAULT_LOGOS[broker.logo];
+  return upgradedLogo ? { ...broker, logo: upgradedLogo } : broker;
+}
+
 export async function getAllBrokersAdmin(): Promise<Broker[]> {
   const sb = getSupabaseAdmin();
   if (sb) {
@@ -497,16 +510,20 @@ export async function getAllBrokersAdmin(): Promise<Broker[]> {
       .order("sort_order", { ascending: true });
 
     if (!error && data && data.length > 0) {
-      return data.map((row) => ({
-        ...(row.payload as Broker),
-        slug: row.slug,
-        isPublished: row.is_published,
-        priorityOrder: row.sort_order,
-      }));
+      return data.map((row) =>
+        normalizeBrokerLogo({
+          ...(row.payload as Broker),
+          slug: row.slug,
+          isPublished: row.is_published,
+          priorityOrder: row.sort_order,
+        })
+      );
     }
   }
   const local = await readLocalDb();
-  return [...local.brokers].sort((a, b) => a.priorityOrder - b.priorityOrder);
+  return [...local.brokers]
+    .map(normalizeBrokerLogo)
+    .sort((a, b) => a.priorityOrder - b.priorityOrder);
 }
 
 export async function getLiveBrokers(): Promise<Broker[]> {

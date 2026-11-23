@@ -1,15 +1,15 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { brokers as seedBrokers } from "@/data/brokers";
 import type { Broker } from "@/types";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { InteractiveCard } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const SECTION_02_ORDER = ["exness", "tickmill", "fxpro", "austex", "bcr"];
+const SECTION_02_ORDER = ["austex", "exness", "tickmill", "fxpro", "bcr"];
 
 export function BrokerPartnersSection({
   brokersList,
@@ -43,13 +43,7 @@ export function BrokerPartnersSection({
             >
               <div>
                 <div className="flex items-center justify-between gap-2">
-                  <Image
-                    src={broker.logo}
-                    alt={`Logo minh họa đối tác ${broker.name}`}
-                    width={132}
-                    height={38}
-                    className="h-9 w-auto"
-                  />
+                  <BrokerLogo broker={broker} size="md" />
                   {broker.featured && (
                     <Badge variant="gold" className="text-[9px]">
                       PRIORITY

@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, CheckCircle2, Lock, ExternalLink } from "lucide-react";
 import { getOrderedBrokers } from "@/data/brokers";
 import type { Broker } from "@/types";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { Tabs, type TabOption } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { InteractiveCard } from "@/components/ui/card";
@@ -102,13 +102,7 @@ export function BrokersExplorer({
           >
             <div>
               <div className="flex items-center justify-between gap-2">
-                <Image
-                  src={broker.logo}
-                  alt={`Logo minh họa ${broker.name}`}
-                  width={150}
-                  height={44}
-                  className="h-10 w-auto"
-                />
+                <BrokerLogo broker={broker} size="md" />
                 {broker.featured ? (
                   <Badge variant="featured">FEATURED BROKER</Badge>
                 ) : (
@@ -255,11 +249,14 @@ export function BrokersExplorer({
                   )}
                 >
                   <td className="px-5 py-4 font-heading font-bold text-ink-primary">
-                    <div className="flex items-center gap-2">
-                      <span>{broker.name}</span>
-                      {broker.featured && (
-                        <Badge variant="featured">PRIORITY</Badge>
-                      )}
+                    <div className="flex items-center gap-3">
+                      <BrokerLogo broker={broker} size="xs" />
+                      <div className="flex items-center gap-2">
+                        <span>{broker.name}</span>
+                        {broker.featured && (
+                          <Badge variant="featured">PRIORITY</Badge>
+                        )}
+                      </div>
                     </div>
                   </td>
                   <td className="px-5 py-4 text-ink-secondary">

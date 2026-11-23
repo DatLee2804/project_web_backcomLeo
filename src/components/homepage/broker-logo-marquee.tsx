@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getOrderedBrokers } from "@/data/brokers";
 import type { Broker } from "@/types";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { cn } from "@/lib/utils";
 
 export function BrokerLogoMarquee({
@@ -37,19 +37,30 @@ export function BrokerLogoMarquee({
                   key={`track-a-${broker.slug}-${idx}`}
                   href={`/brokers/${broker.slug}`}
                   className={cn(
-                    "group flex items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all duration-200 hover:-translate-y-0.5",
+                    "group flex items-center gap-3.5 rounded-2xl border px-4 py-2.5 transition-all duration-200 hover:-translate-y-0.5",
                     broker.featured
                       ? "border-gold/45 bg-[#091C34]/90 shadow-[0_0_20px_rgba(0,194,255,0.14)] hover:border-gold"
                       : "border-line bg-[#071324]/80 hover:border-gold/45 hover:bg-card-hover"
                   )}
                 >
-                  <Image
-                    src={broker.logo}
-                    alt={`Logo đối tác ${broker.name}`}
-                    width={148}
-                    height={42}
-                    className="h-9 w-auto transition-transform duration-200 group-hover:scale-[1.03] sm:h-10"
+                  <BrokerLogo
+                    broker={broker}
+                    size="sm"
+                    className="transition-transform duration-200 group-hover:scale-[1.03]"
                   />
+                  <div className="pr-1 text-left">
+                    <div className="font-heading text-xs font-extrabold uppercase tracking-wider text-ink-primary sm:text-sm">
+                      {broker.name}
+                    </div>
+                    <div
+                      className={cn(
+                        "mt-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                        broker.featured ? "text-gold-light" : "text-ink-muted"
+                      )}
+                    >
+                      {broker.featured ? "PRIORITY • STD05" : "PARTNER BROKER"}
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -65,19 +76,31 @@ export function BrokerLogoMarquee({
                   href={`/brokers/${broker.slug}`}
                   tabIndex={-1}
                   className={cn(
-                    "group flex items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all duration-200 hover:-translate-y-0.5",
+                    "group flex items-center gap-3.5 rounded-2xl border px-4 py-2.5 transition-all duration-200 hover:-translate-y-0.5",
                     broker.featured
                       ? "border-gold/45 bg-[#091C34]/90 shadow-[0_0_20px_rgba(0,194,255,0.14)] hover:border-gold"
                       : "border-line bg-[#071324]/80 hover:border-gold/45 hover:bg-card-hover"
                   )}
                 >
-                  <Image
-                    src={broker.logo}
-                    alt=""
-                    width={148}
-                    height={42}
-                    className="h-9 w-auto transition-transform duration-200 group-hover:scale-[1.03] sm:h-10"
+                  <BrokerLogo
+                    broker={broker}
+                    size="sm"
+                    decorative
+                    className="transition-transform duration-200 group-hover:scale-[1.03]"
                   />
+                  <div className="pr-1 text-left">
+                    <div className="font-heading text-xs font-extrabold uppercase tracking-wider text-ink-primary sm:text-sm">
+                      {broker.name}
+                    </div>
+                    <div
+                      className={cn(
+                        "mt-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                        broker.featured ? "text-gold-light" : "text-ink-muted"
+                      )}
+                    >
+                      {broker.featured ? "PRIORITY • STD05" : "PARTNER BROKER"}
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>

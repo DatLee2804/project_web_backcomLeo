@@ -16,7 +16,9 @@ import {
   VolumeX,
 } from "lucide-react";
 import { defaultSitePagesContent } from "@/data/site-pages";
-import type { HomePageCmsContent } from "@/types";
+import { getOrderedBrokers } from "@/data/brokers";
+import type { Broker, HomePageCmsContent } from "@/types";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -25,11 +27,17 @@ const STAT_ICONS = [Building2, Coins, Layers, Users];
 interface HeroSectionProps {
   heroContent?: HomePageCmsContent["hero"];
   promoVideo?: HomePageCmsContent["promoVideo"];
+  brokersList?: Broker[];
 }
 
-export function HeroSection({ heroContent, promoVideo }: HeroSectionProps) {
+export function HeroSection({
+  heroContent,
+  promoVideo,
+  brokersList,
+}: HeroSectionProps) {
   const hero = heroContent ?? defaultSitePagesContent.home.hero;
   const reel = promoVideo ?? defaultSitePagesContent.home.promoVideo;
+  const capsuleBrokers = (brokersList ?? getOrderedBrokers()).slice(0, 5);
 
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = React.useState(true);
@@ -70,20 +78,15 @@ export function HeroSection({ heroContent, promoVideo }: HeroSectionProps) {
           {/* Left Column: High-Tech Copy & Actions */}
           <div className="lg:col-span-7">
             {/* Capsule Trust Pill */}
-            <div className="inline-flex items-center gap-3 rounded-full border border-line-strong bg-[#071426]/90 px-3.5 py-1.5 shadow-card backdrop-blur-md">
-              <div className="flex -space-x-1.5">
-                {["AU", "EX", "TM", "FX"].map((code, i) => (
-                  <span
-                    key={code}
-                    className={cn(
-                      "flex h-6 w-6 items-center justify-center rounded-full border border-[#03070E] text-[9px] font-extrabold",
-                      i === 0
-                        ? "bg-gold-gradient text-[#020813]"
-                        : "bg-[#0E223D] text-gold-light"
-                    )}
-                  >
-                    {code}
-                  </span>
+            <div className="inline-flex flex-wrap items-center gap-3 rounded-full border border-line-strong bg-[#071426]/90 px-3.5 py-1.5 shadow-card backdrop-blur-md">
+              <div className="flex items-center gap-1">
+                {capsuleBrokers.map((broker) => (
+                  <BrokerLogo
+                    key={broker.slug}
+                    broker={broker}
+                    size="pill"
+                    className="h-5 w-9 rounded border-white/20"
+                  />
                 ))}
               </div>
               <span className="text-xs font-semibold text-gold-light">

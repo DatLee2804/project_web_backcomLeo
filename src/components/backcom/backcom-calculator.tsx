@@ -16,6 +16,7 @@ import { DEMO_REBATE_RATE_PER_LOT } from "@/data/rebate-rates";
 import { calculateRebate } from "@/lib/calculator";
 import { cn, formatUsd } from "@/lib/utils";
 import type { Broker, RebateCalculationMethod } from "@/types";
+import { BrokerLogo } from "@/components/shared/broker-logo";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -299,9 +300,12 @@ export function BackcomCalculator({
             </label>
             {lockBroker ? (
               <div className="flex items-center justify-between rounded-input border border-gold/40 bg-card-hover px-4 py-3">
-                <span className="font-heading text-sm font-bold text-gold-light">
-                  {selectedBroker.name}
-                </span>
+                <div className="flex items-center gap-3">
+                  <BrokerLogo broker={selectedBroker} size="xs" />
+                  <span className="font-heading text-sm font-bold text-gold-light">
+                    {selectedBroker.name}
+                  </span>
+                </div>
                 {selectedBroker.featured && (
                   <Badge variant="featured">FEATURED</Badge>
                 )}
@@ -316,16 +320,21 @@ export function BackcomCalculator({
                       type="button"
                       onClick={() => handleBrokerChange(broker.slug)}
                       className={cn(
-                        "relative flex flex-col items-start rounded-input border px-3 py-2.5 text-left transition-all",
+                        "relative flex flex-col items-start gap-2 rounded-input border px-2.5 py-2.5 text-left transition-all",
                         active
                           ? "border-gold bg-card-hover text-gold-light shadow-sm"
                           : "border-line bg-background-secondary text-ink-secondary hover:border-line-strong hover:text-ink-primary"
                       )}
                     >
-                      <span className="text-xs font-bold">{broker.shortName}</span>
-                      <span className="mt-0.5 text-[10px] text-ink-muted">
-                        {broker.featured ? "Ưu tiên • STD05" : "Đối tác"}
-                      </span>
+                      <BrokerLogo broker={broker} size="pill" />
+                      <div>
+                        <div className="text-xs font-bold">
+                          {broker.shortName}
+                        </div>
+                        <div className="mt-0.5 text-[10px] text-ink-muted">
+                          {broker.featured ? "Ưu tiên • STD05" : "Đối tác"}
+                        </div>
+                      </div>
                     </button>
                   );
                 })}
