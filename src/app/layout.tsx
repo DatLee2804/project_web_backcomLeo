@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { FloatingActions } from "@/components/layout/floating-actions";
+import { PublicOnly } from "@/components/layout/site-chrome";
 import { SITE_CONFIG } from "@/lib/seo";
 
 const inter = Inter({
@@ -67,11 +68,12 @@ export default function RootLayout({
         <div className="relative flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>
-          <Footer />
+          <PublicOnly>
+            <Footer />
+          </PublicOnly>
           <FloatingActions />
         </div>
       </body>
     </html>
   );
 }
-

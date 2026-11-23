@@ -1,7 +1,10 @@
 import { AlertTriangle } from "lucide-react";
 import { MastersExplorer } from "@/components/copy-trading/masters-explorer";
 import { Badge } from "@/components/ui/badge";
+import { getLiveMasters } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Copy Trading & Danh sách Master Traders",
@@ -10,7 +13,9 @@ export const metadata = constructMetadata({
   path: "/copy-trading",
 });
 
-export default function CopyTradingPage() {
+export default async function CopyTradingPage() {
+  const masters = await getLiveMasters();
+
   return (
     <div className="bg-background py-14 sm:py-18 lg:py-22">
       <div className="container">
@@ -27,7 +32,7 @@ export default function CopyTradingPage() {
         </div>
 
         <div className="mt-10">
-          <MastersExplorer />
+          <MastersExplorer items={masters} />
         </div>
 
         {/* Risk Governance Notice */}

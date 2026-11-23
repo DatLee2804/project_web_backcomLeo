@@ -11,8 +11,11 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { getLiveIndicators } from "@/lib/cms";
 import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Công cụ Trading — Thư viện Chỉ báo TradingView & MT5",
@@ -21,7 +24,9 @@ export const metadata = constructMetadata({
   path: "/tools",
 });
 
-export default function ToolsPage() {
+export default async function ToolsPage() {
+  const indicators = await getLiveIndicators();
+
   return (
     <div className="bg-background">
       {/* 1. Hero */}
@@ -55,7 +60,7 @@ export default function ToolsPage() {
             subtitle="Chọn nền tảng bạn đang sử dụng để lọc danh sách công cụ phù hợp."
           />
           <div className="mt-8">
-            <IndicatorsLibrary />
+            <IndicatorsLibrary items={indicators} />
           </div>
         </div>
       </section>

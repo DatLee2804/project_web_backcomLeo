@@ -1,12 +1,24 @@
 import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/seo";
-import { brokers } from "@/data/brokers";
-import { masterTraders } from "@/data/masters";
-import { tradingIndicators } from "@/data/indicators";
+import {
+  getLiveBrokers,
+  getLiveIndicators,
+  getLiveMasters,
+  getLiveRobots,
+} from "@/lib/cms";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.domain;
   const now = new Date();
+
+  const [brokers, indicators, robots, masters] = await Promise.all([
+    getLiveBrokers(),
+    getLiveIndicators(),
+    getLiveRobots(),
+    getLiveMasters(),
+  ]);
 
   const staticRoutes = [
     "",
@@ -16,7 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/tools",
     "/tools/calculator",
     "/robots",
-    "/robots/amix-gold-cent",
     "/copy-trading",
     "/community",
     "/about",
@@ -42,27 +53,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: b.featured ? 0.95 : 0.85,
   }));
 
-  const masterEntries: MetadataRoute.Sitemap = masterTraders.map((m) => ({
+  const robotEntries: MetadataRoute.Sitemap = robots.map((r) => ({
+    url: `${baseUrl}/robots/${r.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
+  const indicatorEntries: MetadataRoute.Sitemap = indicators.map((ind) => ({
+    url: `${baseUrl}/tools/indicators/${ind.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
+
+  const masterEntries: MetadataRoute.Sitemap = masters.map((m) => ({
     url: `${baseUrl}/copy-trading/masters/${m.slug}`,
     lastModified: now,
     changeFrequency: "monthly",
-    priority: 0.65,
+    priority: 0.7,
   }));
-
-  const indicatorEntries: MetadataRoute.Sitemap = tradingIndicators.map(
-    (ind) => ({
-      url: `${baseUrl}/tools/indicators/${ind.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.75,
-    })
-  );
 
   return [
     ...staticEntries,
     ...brokerEntries,
+    ...robotEntries,
     ...indicatorEntries,
     ...masterEntries,
   ];
 }
-

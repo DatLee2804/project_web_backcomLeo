@@ -11,8 +11,15 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Broker } from "@/types";
 
-export function FeaturedBrokersSection() {
-  const ordered = React.useMemo(() => getOrderedBrokers(), []);
+export function FeaturedBrokersSection({
+  brokersList,
+}: {
+  brokersList?: Broker[];
+}) {
+  const ordered = React.useMemo(
+    () => brokersList ?? getOrderedBrokers(),
+    [brokersList]
+  );
   const [selectedSlug, setSelectedSlug] =
     React.useState<Broker["slug"]>("austex");
   const [guideMode, setGuideMode] = React.useState<"new" | "existing">("new");

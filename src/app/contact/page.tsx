@@ -3,8 +3,11 @@ import { ContactForm } from "@/components/shared/contact-form";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { getLiveBrokers } from "@/lib/cms";
 import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Liên hệ Tư vấn Liên kết Sàn & Nhận Backcom",
@@ -18,7 +21,10 @@ interface ContactPageProps {
 }
 
 export default async function ContactPage({ searchParams }: ContactPageProps) {
-  const resolvedParams = await searchParams;
+  const [resolvedParams, brokers] = await Promise.all([
+    searchParams,
+    getLiveBrokers(),
+  ]);
   const defaultBroker = resolvedParams.broker ?? "austex";
 
   return (
@@ -38,7 +44,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
         <div className="mt-10 grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <ContactForm defaultBroker={defaultBroker} />
+            <ContactForm defaultBroker={defaultBroker} brokersList={brokers} />
           </div>
 
           <div className="space-y-6 lg:col-span-4">

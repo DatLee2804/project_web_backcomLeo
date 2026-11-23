@@ -1,14 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Info } from "lucide-react";
-import { masterTraders } from "@/data/masters";
+import { masterTraders as seedMasters } from "@/data/masters";
+import type { MasterTrader } from "@/types";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { InteractiveCard } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function MasterPerformanceSection() {
+export function MasterPerformanceSection({
+  masters = seedMasters,
+}: {
+  masters?: MasterTrader[];
+}) {
+  const displayList = masters.slice(0, 4);
+  const hasAnyDemo = displayList.some((m) => m.isDemo);
+
   return (
     <section className="border-b border-line bg-background-secondary py-12 sm:py-14 lg:py-16">
       <div className="container">
@@ -18,18 +26,20 @@ export function MasterPerformanceSection() {
           subtitle="Khám phá cấu trúc đánh giá chiến lược giao dịch thông qua các chỉ số ROI, Max Drawdown và thời gian vận hành."
         />
 
-        {/* Explicit DEMO Transparency Banner */}
-        <div className="mx-auto mt-6 flex max-w-3xl items-center justify-center gap-2.5 rounded-xl border border-sky-400/25 bg-sky-500/10 px-4 py-2.5 text-center text-xs text-sky-200">
-          <Info className="h-4 w-4 shrink-0 text-sky-300" />
-          <span>
-            <strong>Ghi chú minh bạch:</strong> Các thẻ Master dưới đây sử dụng{" "}
-            <strong>dữ liệu DEMO minh họa giao diện</strong> trong giai đoạn chờ
-            tích hợp danh sách Master thực tế. Không phải thành tích đầu tư thật.
-          </span>
-        </div>
+        {hasAnyDemo && (
+          <div className="mx-auto mt-6 flex max-w-3xl items-center justify-center gap-2.5 rounded-xl border border-gold/30 bg-gold/10 px-4 py-2.5 text-center text-xs text-ink-secondary">
+            <Info className="h-4 w-4 shrink-0 text-gold-light" />
+            <span>
+              <strong className="text-gold-light">Ghi chú minh bạch:</strong>{" "}
+              Các thẻ gắn nhãn <strong>DEMO</strong> sử dụng dữ liệu minh họa
+              giao diện; các thẻ gắn nhãn <strong>MASTER</strong> là hồ sơ chính
+              thức.
+            </span>
+          </div>
+        )}
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {masterTraders.map((master) => (
+          {displayList.map((master) => (
             <InteractiveCard
               key={master.slug}
               className="flex flex-col justify-between p-5"
@@ -39,10 +49,10 @@ export function MasterPerformanceSection() {
                   <div className="flex items-center gap-3">
                     <Image
                       src={master.avatar}
-                      alt={`Avatar minh họa ${master.name}`}
+                      alt={`Avatar ${master.name}`}
                       width={48}
                       height={48}
-                      className="h-12 w-12 rounded-xl"
+                      className="h-12 w-12 rounded-xl object-cover"
                     />
                     <div>
                       <h3 className="font-heading text-sm font-bold text-ink-primary">
@@ -53,13 +63,18 @@ export function MasterPerformanceSection() {
                       </p>
                     </div>
                   </div>
-                  <Badge variant="demo">DEMO</Badge>
+                  {master.isDemo ? (
+                    <Badge variant="demo">DEMO</Badge>
+                  ) : (
+                    <Badge variant="featured">MASTER</Badge>
+                  )}
                 </div>
 
-                {/* Metrics Grid */}
                 <div className="mt-5 grid grid-cols-2 gap-2.5 rounded-xl border border-line bg-background-secondary p-3.5">
                   <div>
-                    <div className="text-[11px] text-ink-muted">ROI (Demo)</div>
+                    <div className="text-[11px] text-ink-muted">
+                      ROI {master.isDemo ? "(Demo)" : ""}
+                    </div>
                     <div className="mt-0.5 font-heading text-lg font-bold text-success tabular-nums-fin">
                       +{master.roiPct.toFixed(1)}%
                     </div>
@@ -94,7 +109,7 @@ export function MasterPerformanceSection() {
                   "mt-5 w-full"
                 )}
               >
-                View Profile (Demo)
+                View Profile
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </InteractiveCard>
@@ -114,4 +129,3 @@ export function MasterPerformanceSection() {
     </section>
   );
 }
-

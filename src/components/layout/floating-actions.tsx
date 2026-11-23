@@ -2,12 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUp, Calculator, Mail, MessageCircle } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 export function FloatingActions() {
+  const pathname = usePathname();
   const [showBackToTop, setShowBackToTop] = React.useState(false);
 
   React.useEffect(() => {
@@ -16,6 +18,10 @@ export function FloatingActions() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });

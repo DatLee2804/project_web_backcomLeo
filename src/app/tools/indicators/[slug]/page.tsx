@@ -13,7 +13,7 @@ import {
   Sliders,
   Terminal,
 } from "lucide-react";
-import { getIndicatorBySlug, tradingIndicators } from "@/data/indicators";
+import { getLiveIndicatorBySlug, getLiveIndicators } from "@/lib/cms";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Accordion } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -22,19 +22,17 @@ import { buttonVariants } from "@/components/ui/button";
 import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 interface IndicatorDetailPageProps {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  return tradingIndicators.map((ind) => ({ slug: ind.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: IndicatorDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const indicator = getIndicatorBySlug(slug);
+  const indicator = await getLiveIndicatorBySlug(slug);
   if (!indicator) {
     return constructMetadata({
       title: "Chỉ báo không tồn tại",
@@ -55,13 +53,16 @@ export default async function IndicatorDetailPage({
   params,
 }: IndicatorDetailPageProps) {
   const { slug } = await params;
-  const indicator = getIndicatorBySlug(slug);
+  const [indicator, allIndicators] = await Promise.all([
+    getLiveIndicatorBySlug(slug),
+    getLiveIndicators(),
+  ]);
 
   if (!indicator) {
     notFound();
   }
 
-  const otherIndicators = tradingIndicators.filter(
+  const otherIndicators = allIndicators.filter(
     (item) => item.slug !== indicator.slug
   );
 

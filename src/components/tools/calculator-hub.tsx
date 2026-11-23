@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, Clock, Layers } from "lucide-react";
 import { BackcomCalculator } from "@/components/backcom/backcom-calculator";
+import type { Broker } from "@/types";
 import { Tabs, type TabOption } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -55,7 +56,11 @@ const ROADMAP_MODULES: Record<
   },
 };
 
-export function CalculatorHub() {
+export function CalculatorHub({
+  brokersList,
+}: {
+  brokersList?: Broker[];
+}) {
   const [activeModule, setActiveModule] =
     React.useState<CalcModuleId>("backcom");
 
@@ -69,7 +74,10 @@ export function CalculatorHub() {
 
       <div className="mt-8">
         {activeModule === "backcom" ? (
-          <BackcomCalculator initialBrokerSlug="austex" />
+          <BackcomCalculator
+            initialBrokerSlug="austex"
+            brokersList={brokersList}
+          />
         ) : (
           <Card className="p-8 sm:p-10">
             <div className="flex flex-wrap items-center gap-2.5">

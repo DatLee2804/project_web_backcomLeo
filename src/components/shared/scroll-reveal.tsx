@@ -56,7 +56,7 @@ export function ScrollReveal({
       }
     );
 
-    observer.observe(el);
+    observer.observe(el); 
 
     const onScrollFallback = () => {
       if (!ref.current) return;

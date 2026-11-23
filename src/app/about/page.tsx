@@ -8,13 +8,15 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import { getOrderedBrokers } from "@/data/brokers";
+import { getLiveBrokers } from "@/lib/cms";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Về Backcom Mr Leo — Định vị Thương hiệu & Hệ sinh thái Trading",
@@ -23,8 +25,8 @@ export const metadata = constructMetadata({
   path: "/about",
 });
 
-export default function AboutPage() {
-  const brokers = getOrderedBrokers();
+export default async function AboutPage() {
+  const brokers = await getLiveBrokers();
 
   return (
     <div className="bg-background">

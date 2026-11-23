@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, CheckCircle2, Lock, ExternalLink } from "lucide-react";
 import { getOrderedBrokers } from "@/data/brokers";
+import type { Broker } from "@/types";
 import { Tabs, type TabOption } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { InteractiveCard } from "@/components/ui/card";
@@ -13,17 +14,51 @@ import { cn } from "@/lib/utils";
 
 type BrokerFilterId = "all" | "forex" | "mt4" | "mt5" | "featured";
 
-const FILTER_TABS: TabOption[] = [
-  { id: "all", label: "All", badge: "5" },
-  { id: "forex", label: "Forex", badge: "5" },
-  { id: "mt4", label: "MT4", badge: "3" },
-  { id: "mt5", label: "MT5", badge: "3" },
-  { id: "featured", label: "Featured", badge: "1" },
-];
-
-export function BrokersExplorer() {
+export function BrokersExplorer({
+  brokersList,
+  comparisonHeading,
+}: {
+  brokersList?: Broker[];
+  comparisonHeading?: { title: string; subtitle: string };
+}) {
   const [activeFilter, setActiveFilter] = React.useState<BrokerFilterId>("all");
-  const allBrokers = React.useMemo(() => getOrderedBrokers(), []);
+  const allBrokers = React.useMemo(
+    () => brokersList ?? getOrderedBrokers(),
+    [brokersList]
+  );
+
+  const filterTabs: TabOption[] = React.useMemo(
+    () => [
+      { id: "all", label: "All", badge: String(allBrokers.length) },
+      {
+        id: "forex",
+        label: "Forex",
+        badge: String(
+          allBrokers.filter((b) => b.categories.includes("Forex")).length
+        ),
+      },
+      {
+        id: "mt4",
+        label: "MT4",
+        badge: String(
+          allBrokers.filter((b) => b.platforms.includes("MT4")).length
+        ),
+      },
+      {
+        id: "mt5",
+        label: "MT5",
+        badge: String(
+          allBrokers.filter((b) => b.platforms.includes("MT5")).length
+        ),
+      },
+      {
+        id: "featured",
+        label: "Featured",
+        badge: String(allBrokers.filter((b) => b.featured).length),
+      },
+    ],
+    [allBrokers]
+  );
 
   const filteredBrokers = React.useMemo(() => {
     switch (activeFilter) {
@@ -45,7 +80,7 @@ export function BrokersExplorer() {
       {/* Filter Bar */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <Tabs
-          options={FILTER_TABS}
+          options={filterTabs}
           value={activeFilter}
           onChange={(val) => setActiveFilter(val as BrokerFilterId)}
         />
@@ -190,11 +225,12 @@ export function BrokersExplorer() {
       <div className="mt-16">
         <div className="mb-6">
           <h2 className="font-heading text-2xl font-bold text-ink-primary">
-            Bảng tổng hợp &amp; So sánh thông số Sàn giao dịch
+            {comparisonHeading?.title ??
+              "Bảng tổng hợp & So sánh thông số Sàn giao dịch"}
           </h2>
           <p className="mt-1.5 text-sm text-ink-secondary">
-            Đối chiếu nhanh các hạng mục đã xác nhận và các hạng mục đang cập
-            nhật chính thức trong hệ thống.
+            {comparisonHeading?.subtitle ??
+              "Đối chiếu nhanh các hạng mục tài khoản, nền tảng và chính sách hoàn phí của tất cả các sàn trong hệ sinh thái."}
           </p>
         </div>
 
@@ -210,59 +246,18 @@ export function BrokersExplorer() {
               </tr>
             </thead>
             <tbody className="divide-y divide-line">
-              {[
-                {
-                  slug: "exness",
-                  name: "Exness",
-                  account: "Đang cập nhật (Configurable)",
-                  platform: "MT4 / MT5",
-                  rebate: "Liên hệ / Đang cập nhật",
-                  featured: false,
-                },
-                {
-                  slug: "tickmill",
-                  name: "Tickmill",
-                  account: "Đang cập nhật (Configurable)",
-                  platform: "MT4 / MT5",
-                  rebate: "Liên hệ / Đang cập nhật",
-                  featured: false,
-                },
-                {
-                  slug: "fxpro",
-                  name: "FxPro",
-                  account: "Đang cập nhật (Configurable)",
-                  platform: "MT4 / MT5",
-                  rebate: "Liên hệ / Đang cập nhật",
-                  featured: false,
-                },
-                {
-                  slug: "austex",
-                  name: "Austex Markets",
-                  account: "STD05 (Mặc định, Gold Spread: 36) / STD (31)",
-                  platform: "Đang cập nhật",
-                  rebate: "Cấu hình theo STD05 / Đang cập nhật",
-                  featured: true,
-                },
-                {
-                  slug: "bcr",
-                  name: "BCR",
-                  account: "Đang cập nhật (Configurable)",
-                  platform: "Đang cập nhật",
-                  rebate: "Liên hệ / Đang cập nhật",
-                  featured: false,
-                },
-              ].map((row) => (
+              {allBrokers.map((broker) => (
                 <tr
-                  key={row.slug}
+                  key={broker.slug}
                   className={cn(
                     "transition-colors hover:bg-card-hover/60",
-                    row.featured && "bg-gold/[0.05]"
+                    broker.featured && "bg-gold/[0.05]"
                   )}
                 >
                   <td className="px-5 py-4 font-heading font-bold text-ink-primary">
                     <div className="flex items-center gap-2">
-                      <span>{row.name}</span>
-                      {row.featured && (
+                      <span>{broker.name}</span>
+                      {broker.featured && (
                         <Badge variant="featured">PRIORITY</Badge>
                       )}
                     </div>
@@ -270,19 +265,23 @@ export function BrokersExplorer() {
                   <td className="px-5 py-4 text-ink-secondary">
                     <span
                       className={cn(
-                        row.featured && "font-semibold text-gold-light"
+                        broker.featured && "font-semibold text-gold-light"
                       )}
                     >
-                      {row.account}
+                      {broker.accountsTableLabel || "Đang cập nhật"}
                     </span>
                   </td>
                   <td className="px-5 py-4 text-ink-secondary">
-                    {row.platform}
+                    {broker.platforms.length > 0
+                      ? broker.platforms.join(" / ")
+                      : "Đang cập nhật"}
                   </td>
-                  <td className="px-5 py-4 text-ink-secondary">{row.rebate}</td>
+                  <td className="px-5 py-4 text-ink-secondary">
+                    {broker.rebateTableLabel || "Liên hệ / Đang cập nhật"}
+                  </td>
                   <td className="px-5 py-4 text-right">
                     <Link
-                      href={`/brokers/${row.slug}`}
+                      href={`/brokers/${broker.slug}`}
                       className="inline-flex items-center gap-1 text-xs font-semibold text-gold-light hover:underline"
                     >
                       Xem chi tiết

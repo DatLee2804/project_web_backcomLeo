@@ -7,6 +7,7 @@ import { z } from "zod";
 import {
   AlertCircle,
   Check,
+  CheckCircle2,
   Copy,
   ExternalLink,
   Info,
@@ -14,6 +15,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { getOrderedBrokers } from "@/data/brokers";
+import type { Broker } from "@/types";
 import { SITE_CONFIG } from "@/lib/seo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -51,12 +53,20 @@ type ContactFormValues = z.infer<typeof contactSchema>;
 
 interface ContactFormProps {
   defaultBroker?: string;
+  brokersList?: Broker[];
 }
 
-export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
-  const brokers = React.useMemo(() => getOrderedBrokers(), []);
+export function ContactForm({
+  defaultBroker = "austex",
+  brokersList,
+}: ContactFormProps) {
+  const brokers = React.useMemo(
+    () => brokersList ?? getOrderedBrokers(),
+    [brokersList]
+  );
   const [validatedPayload, setValidatedPayload] =
     React.useState<ContactFormValues | null>(null);
+  const [savedToDatabase, setSavedToDatabase] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
 
   const {
@@ -77,8 +87,21 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
     },
   });
 
-  const onSubmit = (values: ContactFormValues) => {
-    // Transparent frontend validation handler — does NOT fake backend email dispatch
+  const onSubmit = async (values: ContactFormValues) => {
+    let dbOk = false;
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const data = (await res.json()) as { ok?: boolean; savedToDb?: boolean };
+      dbOk = Boolean(res.ok && data.savedToDb);
+    } catch {
+      dbOk = false;
+    }
+
+    setSavedToDatabase(dbOk);
     setValidatedPayload(values);
     setCopied(false);
   };
@@ -120,27 +143,39 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
             Tuyệt đối không nhập mật khẩu tài khoản giao dịch vào biểu mẫu này.
           </p>
         </div>
-        <Badge variant="gold">Zod Validated</Badge>
+        <Badge variant="gold">CRM Connected</Badge>
       </div>
 
       {validatedPayload ? (
         <div className="mt-6 space-y-5">
-          {/* Transparent Status Notice (No Fake Email Sent Claim) */}
-          <div className="rounded-card border border-amber-400/35 bg-amber-500/10 p-4 text-xs leading-relaxed text-amber-100 sm:text-sm">
-            <div className="flex items-start gap-2.5">
-              <Info className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
-              <div>
-                <strong className="text-gold-light">
-                  Thông tin đã được kiểm tra hợp lệ trên trình duyệt (Chưa kết
-                  nối máy chủ gửi Email):
-                </strong>{" "}
-                Ở phiên bản hiện tại, cổng gửi thư tự động phía máy chủ chưa kích
-                hoạt nên hệ thống <strong>không giả lập báo gửi email</strong>.
-                Bạn vui lòng sao chép phiếu thông tin đã chuẩn hóa bên dưới và
-                gửi trực tiếp vào Zalo Cộng đồng để đội ngũ hỗ trợ ngay.
+          {savedToDatabase ? (
+            <div className="rounded-card border border-success/40 bg-success-muted p-4 text-xs leading-relaxed text-ink-primary sm:text-sm">
+              <div className="flex items-start gap-2.5">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" />
+                <div>
+                  <strong className="text-success">
+                    Đã gửi yêu cầu tư vấn thành công!
+                  </strong>{" "}
+                  Thông tin của bạn đã được lưu trực tiếp vào hệ thống quản trị
+                  Backcom Mr Leo. Đội ngũ sẽ liên hệ sớm qua SĐT/Zalo của bạn,
+                  hoặc bạn có thể bấm nút Zalo bên dưới để trò chuyện ngay.
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="rounded-card border border-vip/35 bg-vip/10 p-4 text-xs leading-relaxed text-ink-primary sm:text-sm">
+              <div className="flex items-start gap-2.5">
+                <Info className="mt-0.5 h-5 w-5 shrink-0 text-vip" />
+                <div>
+                  <strong className="text-vip-light">
+                    Đã chuẩn hóa phiếu yêu cầu tư vấn:
+                  </strong>{" "}
+                  Bạn vui lòng sao chép nội dung bên dưới và gửi vào Zalo Hỗ trợ
+                  chính thức để đội ngũ phản hồi ngay lập tức.
+                </div>
+              </div>
+            </div>
+          )}
 
           <pre className="overflow-x-auto whitespace-pre-wrap rounded-xl border border-line bg-background-secondary p-4 font-sans text-xs leading-relaxed text-ink-primary sm:text-sm">
             {formattedSummary}
@@ -168,7 +203,7 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
               className={cn(buttonVariants({ variant: "primary", size: "md" }))}
             >
               <MessageCircle className="h-4 w-4" />
-              Mở Zalo Hỗ trợ để gửi ngay
+              Mở Zalo Hỗ trợ ngay
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
 
@@ -181,7 +216,7 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
               }}
             >
               <RotateCcw className="h-4 w-4" />
-              Tạo yêu cầu mới
+              Gửi yêu cầu khác
             </Button>
           </div>
         </div>
@@ -192,7 +227,6 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
           className="mt-6 space-y-5"
         >
           <div className="grid gap-5 sm:grid-cols-2">
-            {/* Full Name */}
             <div>
               <label
                 htmlFor="fullName"
@@ -215,7 +249,6 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
               )}
             </div>
 
-            {/* Email */}
             <div>
               <label
                 htmlFor="email"
@@ -240,7 +273,6 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            {/* Phone / Zalo */}
             <div>
               <label
                 htmlFor="phoneOrZalo"
@@ -263,7 +295,6 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
               )}
             </div>
 
-            {/* Interested Broker */}
             <div>
               <label
                 htmlFor="interestedBroker"
@@ -281,12 +312,11 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
                     {b.name} {b.slug === "austex" ? "(Mặc định STD05)" : ""}
                   </option>
                 ))}
-                <option value="amix-gold-cent-bot">
-                  Robot EA: Amix Trade – Gold Cent Bot
-                </option>
+                <option value="bot-trading">Bot Trading (EA MT5)</option>
                 <option value="indicators-tools">
-                  TradingView &amp; MT5 Indicators
+                  Công cụ Trading (Indicators)
                 </option>
+                <option value="copy-trading">Copy Trading Master</option>
                 <option value="ib-partnership">Hợp tác phát triển IB</option>
               </select>
               {errors.interestedBroker && (
@@ -298,7 +328,6 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
             </div>
           </div>
 
-          {/* Message */}
           <div>
             <label
               htmlFor="message"
@@ -328,11 +357,10 @@ export function ContactForm({ defaultBroker = "austex" }: ContactFormProps) {
             disabled={isSubmitting}
             className="w-full sm:w-auto"
           >
-            Kiểm tra &amp; Chuẩn hóa Yêu cầu Tư vấn
+            {isSubmitting ? "Đang gửi thông tin..." : "Gửi Yêu cầu Tư vấn"}
           </Button>
         </form>
       )}
     </Card>
   );
 }
-

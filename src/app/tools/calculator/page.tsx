@@ -2,7 +2,10 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { CalculatorHub } from "@/components/tools/calculator-hub";
 import { Badge } from "@/components/ui/badge";
+import { getLiveBrokers } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Công cụ Tính Backcom & Khối lượng Giao dịch (Trading Calculator)",
@@ -11,7 +14,9 @@ export const metadata = constructMetadata({
   path: "/tools/calculator",
 });
 
-export default function CalculatorPage() {
+export default async function CalculatorPage() {
+  const brokers = await getLiveBrokers();
+
   return (
     <div className="bg-background py-12 sm:py-16 lg:py-20">
       <div className="container">
@@ -38,7 +43,7 @@ export default function CalculatorPage() {
         </div>
 
         <div id="roadmap" className="mt-10 scroll-mt-24">
-          <CalculatorHub />
+          <CalculatorHub brokersList={brokers} />
         </div>
       </div>
     </div>

@@ -16,9 +16,15 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { Accordion } from "@/components/ui/accordion";
 import { buttonVariants } from "@/components/ui/button";
-import { globalFaqs } from "@/data/faq";
+import {
+  getLiveBrokers,
+  getLiveMasters,
+  getSitePagesContent,
+} from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Hệ sinh thái Forex Rebate, Sàn giao dịch & Công cụ Trading",
@@ -27,23 +33,34 @@ export const metadata = constructMetadata({
   path: "/",
 });
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [brokers, masters, sitePages] = await Promise.all([
+    getLiveBrokers(),
+    getLiveMasters(),
+    getSitePagesContent(),
+  ]);
+
+  const home = sitePages.home;
+
   return (
     <>
       {/* SECTION 01 – HERO BANNER + 9:16 VERTICAL PROMO VIDEO */}
-      <HeroSection />
+      <HeroSection
+        heroContent={home.hero}
+        promoVideo={home.promoVideo}
+      />
 
       {/* HORIZONTAL SCROLLING BROKER LOGOS MARQUEE */}
-      <BrokerLogoMarquee />
+      <BrokerLogoMarquee brokersList={brokers} />
 
       {/* HIGH-TECH 3-NODE BACKCOM LOOP */}
       <ScrollReveal>
-        <WhatIsBackcomLoop />
+        <WhatIsBackcomLoop content={home.rebateLoop} />
       </ScrollReveal>
 
       {/* SECTION 02 – BROKER PARTNERS */}
       <ScrollReveal>
-        <BrokerPartnersSection />
+        <BrokerPartnersSection brokersList={brokers} />
       </ScrollReveal>
 
       {/* SECTION 03 – WHY BACKCOM MR LEO */}
@@ -63,7 +80,10 @@ export default function HomePage() {
             subtitle="Ước tính khoản hoàn phí giao dịch của bạn theo từng sàn, loại tài khoản và mô hình quy đổi."
           />
           <div className="mt-10">
-            <BackcomCalculator initialBrokerSlug="austex" />
+            <BackcomCalculator
+              initialBrokerSlug="austex"
+              brokersList={brokers}
+            />
           </div>
         </div>
       </section>
@@ -75,7 +95,7 @@ export default function HomePage() {
 
       {/* SECTION 06 – INTERACTIVE SPLIT BROKER TERMINAL */}
       <ScrollReveal>
-        <FeaturedBrokersSection />
+        <FeaturedBrokersSection brokersList={brokers} />
       </ScrollReveal>
 
       {/* WITH VS WITHOUT REBATES MATRIX */}
@@ -90,12 +110,12 @@ export default function HomePage() {
 
       {/* SECTION 08 – MASTER PERFORMANCE */}
       <ScrollReveal>
-        <MasterPerformanceSection />
+        <MasterPerformanceSection masters={masters} />
       </ScrollReveal>
 
       {/* SECTION 09 – COMMUNITY */}
       <ScrollReveal>
-        <CommunitySection />
+        <CommunitySection content={home.community} />
       </ScrollReveal>
 
       {/* SECTION 10 – FAQ */}
@@ -107,7 +127,7 @@ export default function HomePage() {
             subtitle="Giải đáp rõ ràng về cơ chế hoàn phí Backcom, liên kết sàn giao dịch, Robot EA và quản trị rủi ro."
           />
           <div className="mt-8">
-            <Accordion items={globalFaqs} />
+            <Accordion items={home.faqs} />
           </div>
           <div className="mt-8 text-center">
             <Link
@@ -128,31 +148,31 @@ export default function HomePage() {
         <div className="container relative z-10">
           <div className="tech-glass-panel mx-auto max-w-4xl rounded-card-lg border border-gold/45 p-8 text-center shadow-gold sm:p-12">
             <h2 className="font-heading text-2xl font-extrabold tracking-tight text-ink-primary sm:text-4xl">
-              READY TO OPTIMIZE YOUR TRADING COST?
+              {home.finalCta.title}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-ink-secondary sm:text-lg">
-              Bắt đầu khám phá hệ sinh thái Backcom Mr Leo ngay hôm nay.
+              {home.finalCta.subtitle}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
               <Link
-                href="/tools/calculator"
+                href={home.finalCta.primaryHref || "/tools/calculator"}
                 className={cn(
                   buttonVariants({ variant: "primary", size: "lg" }),
                   "w-full rounded-xl sm:w-auto"
                 )}
               >
                 <Calculator className="h-4 w-4" />
-                Tính Backcom
+                {home.finalCta.primaryLabel}
               </Link>
               <Link
-                href="/contact"
+                href={home.finalCta.secondaryHref || "/contact"}
                 className={cn(
                   buttonVariants({ variant: "secondary", size: "lg" }),
                   "w-full rounded-xl sm:w-auto"
                 )}
               >
                 <MessageSquare className="h-4 w-4 text-gold-light" />
-                Liên hệ tư vấn
+                {home.finalCta.secondaryLabel}
               </Link>
             </div>
           </div>

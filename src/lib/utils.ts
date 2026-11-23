@@ -23,3 +23,13 @@ export function formatNumber(num: number, decimals = 2): string {
   }).format(num);
 }
 
+export function slugifyVietnamese(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+

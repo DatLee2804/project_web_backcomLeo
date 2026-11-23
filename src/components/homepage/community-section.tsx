@@ -1,25 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, MessageCircle, ShieldCheck, Users } from "lucide-react";
-import { SITE_CONFIG } from "@/lib/seo";
+import { defaultSitePagesContent } from "@/data/site-pages";
+import type { HomePageCmsContent } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function CommunitySection() {
+export function CommunitySection({
+  content,
+}: {
+  content?: HomePageCmsContent["community"];
+}) {
+  const comm = content ?? defaultSitePagesContent.home.community;
+
   return (
     <section className="border-b border-line bg-background py-12 sm:py-14 lg:py-16">
       <div className="container">
         <div className="overflow-hidden rounded-card-lg border border-line-strong bg-surface-gradient p-6 sm:p-10 lg:p-12">
           <div className="grid items-center gap-10 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <Badge variant="gold">TRADER &amp; PARTNER HUB</Badge>
+              <Badge variant="gold">{comm.badge}</Badge>
               <h2 className="mt-4 font-heading text-2xl font-bold tracking-tight text-ink-primary sm:text-3xl lg:text-4xl">
-                JOIN OUR TRADING COMMUNITY
+                {comm.title}
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-secondary">
-                Cộng đồng đối tác Backcom Mr Leo – nơi kết nối trader, chia sẻ
-                kiến thức và hỗ trợ hệ sinh thái giao dịch.
+                {comm.description}
               </p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -51,7 +57,7 @@ export function CommunitySection() {
 
               <div className="mt-8 flex flex-wrap items-center gap-3.5">
                 <a
-                  href={SITE_CONFIG.zaloGroupUrl}
+                  href={comm.zaloGroupUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
@@ -59,7 +65,7 @@ export function CommunitySection() {
                   )}
                 >
                   <MessageCircle className="h-4 w-4" />
-                  JOIN OUR COMMUNITY
+                  {comm.ctaLabel}
                   <ExternalLink className="h-4 w-4" />
                 </a>
                 <Link
@@ -75,11 +81,11 @@ export function CommunitySection() {
 
             <div className="lg:col-span-5">
               <Image
-                src="/images/community/community-network.svg"
-                alt="Mạng lưới cộng đồng đối tác Backcom Mr Leo"
+                src={comm.imageUrl || "/images/community/community-network.svg"}
+                alt={comm.title}
                 width={560}
                 height={360}
-                className="w-full rounded-card border border-line"
+                className="w-full rounded-card border border-line object-cover"
               />
             </div>
           </div>

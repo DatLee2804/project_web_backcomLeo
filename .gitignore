@@ -26,6 +26,10 @@ yarn-error.log*
 .env*.local
 .env
 
+# local dev cms fallback data & uploads
+/data/local-cms-db.json
+/public/uploads/
+
 # vercel
 .vercel
 

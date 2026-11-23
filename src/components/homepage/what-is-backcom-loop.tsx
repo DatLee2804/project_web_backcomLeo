@@ -5,9 +5,17 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Building2, Sparkles, UserCheck } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { defaultSitePagesContent } from "@/data/site-pages";
+import type { HomePageCmsContent } from "@/types";
 import { cn } from "@/lib/utils";
 
-export function WhatIsBackcomLoop() {
+export function WhatIsBackcomLoop({
+  content,
+}: {
+  content?: HomePageCmsContent["rebateLoop"];
+}) {
+  const loopCopy = content ?? defaultSitePagesContent.home.rebateLoop;
+
   // Synchronized 3-step active phase (0: Trader -> Broker, 1: Broker -> Mr Leo, 2: Mr Leo -> Trader)
   const [activePhase, setActivePhase] = React.useState<0 | 1 | 2>(0);
   const [hoveredNode, setHoveredNode] = React.useState<0 | 1 | 2 | null>(null);
@@ -34,29 +42,16 @@ export function WhatIsBackcomLoop() {
             <div className="lg:col-span-6">
               <span className="inline-flex items-center gap-2 rounded-full border border-gold/35 bg-gold/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-gold-light">
                 <span className="h-1.5 w-1.5 animate-ping rounded-full bg-gold-light" />
-                CƠ CHẾ HOÀN PHÍ TỰ ĐỘNG &amp; MINH BẠCH
+                {loopCopy.badge}
               </span>
 
               <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-tight text-ink-primary sm:text-4xl">
-                Backcom là gì?
+                {loopCopy.title}
               </h2>
 
               <div className="mt-5 space-y-4 text-sm leading-relaxed text-ink-secondary sm:text-base">
-                <p>
-                  <strong className="text-ink-primary">
-                    Backcom (Back Commission / Forex Rebate)
-                  </strong>{" "}
-                  là chương trình hoàn trả một phần phí giao dịch (Spread hoặc
-                  Commission) cho nhà giao dịch thông qua đối tác giới thiệu
-                  chính thức của sàn (Introducing Broker - IB).
-                </p>
-                <p>
-                  Khi bạn kết nối tài khoản dưới mã đối tác{" "}
-                  <strong className="text-gold-light">Backcom Mr Leo</strong>,
-                  điều kiện khớp lệnh tại sàn được giữ nguyên minh bạch, trong
-                  khi phần hoa hồng IB phát sinh trên mỗi Lot đóng lệnh sẽ được
-                  luân chuyển hoàn lại về cho bạn theo chính sách từng sàn.
-                </p>
+                <p>{loopCopy.paragraph1}</p>
+                <p>{loopCopy.paragraph2}</p>
               </div>
 
               <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -81,9 +76,7 @@ export function WhatIsBackcomLoop() {
                 </Link>
               </div>
 
-              <p className="mt-5 text-xs text-ink-muted">
-                Miễn phí tham gia • Không hỏi mật khẩu giao dịch • 5 Sàn đối tác
-              </p>
+              <p className="mt-5 text-xs text-ink-muted">{loopCopy.footnote}</p>
             </div>
 
             {/* Right Animated 3-Node Circular Cashflow Loop */}

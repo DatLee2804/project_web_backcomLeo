@@ -62,12 +62,13 @@ export interface BrokerExternalPortal {
 }
 
 export interface Broker {
-  slug: "exness" | "tickmill" | "fxpro" | "austex" | "bcr";
+  slug: string;
   name: string;
   shortName: string;
   logo: string;
   featured: boolean;
   priorityOrder: number;
+  isPublished?: boolean;
   badge?: string;
   tagline: string;
   shortDescription: string;
@@ -121,6 +122,8 @@ export interface TradingRobot {
   subtitle: string;
   badge: string;
   status: ConfigStatus;
+  isPublished?: boolean;
+  sortOrder?: number;
   heroImage: string;
   supportedPlatforms: string[];
   targetSymbols: string[];
@@ -156,6 +159,8 @@ export interface TradingIndicator {
   platform: "TradingView" | "MT5" | "MT4/MT5";
   category: string;
   status: ConfigStatus;
+  isPublished?: boolean;
+  sortOrder?: number;
   subtitle: string;
   summary: string;
   features: string[];
@@ -206,7 +211,9 @@ export interface MasterTrader {
   name: string;
   code: string;
   avatar: string;
-  isDemo: true;
+  isDemo: boolean;
+  isPublished?: boolean;
+  sortOrder?: number;
   strategyName: string;
   primaryMarkets: string[];
   roiPct: number;
@@ -223,5 +230,148 @@ export interface MasterTrader {
   equityCurve: EquityPoint[];
   monthlyReturns: MonthlyReturnPoint[];
   sampleHistory: TradeHistorySample[];
+}
+
+export type LeadStatus = "new" | "contacted" | "completed";
+
+export interface LeadSubmission {
+  id: string;
+  fullName: string;
+  email: string;
+  phoneOrZalo: string;
+  interestedBroker: string;
+  message: string;
+  status: LeadStatus;
+  adminNote: string;
+  createdAt: string;
+}
+
+export type UserRole = "user" | "admin";
+export type AuthProviderType = "credentials" | "google" | "env-admin";
+
+export interface AppUser {
+  id: string;
+  email: string;
+  fullName: string;
+  phoneOrZalo: string;
+  passwordHash?: string | null;
+  provider: AuthProviderType;
+  googleId?: string | null;
+  avatarUrl?: string | null;
+  role: UserRole;
+  createdAt: string;
+}
+
+export interface SessionUser {
+  id: string;
+  email: string;
+  fullName: string;
+  role: UserRole;
+  provider: AuthProviderType;
+  avatarUrl?: string | null;
+}
+
+export interface HomePageCmsContent {
+  promoBar: {
+    enabled: boolean;
+    badge: string;
+    text: string;
+    ctaLabel: string;
+    ctaHref: string;
+  };
+  hero: {
+    eyebrow: string;
+    titleLine1: string;
+    titleLine2: string;
+    description: string;
+    primaryCtaLabel: string;
+    primaryCtaHref: string;
+    secondaryCtaLabel: string;
+    secondaryCtaHref: string;
+    floatingTagTitle: string;
+    floatingTagSub: string;
+    stats: { value: string; label: string }[];
+  };
+  promoVideo: {
+    videoSrc: string | null;
+    posterSrc: string | null;
+    badge: string;
+    title: string;
+    subtitle: string;
+    ctaLabel: string;
+    ctaHref: string;
+  };
+  rebateLoop: {
+    badge: string;
+    title: string;
+    paragraph1: string;
+    paragraph2: string;
+    footnote: string;
+  };
+  community: {
+    badge: string;
+    title: string;
+    description: string;
+    zaloGroupUrl: string;
+    ctaLabel: string;
+    imageUrl: string;
+  };
+  finalCta: {
+    title: string;
+    subtitle: string;
+    primaryLabel: string;
+    primaryHref: string;
+    secondaryLabel: string;
+    secondaryHref: string;
+  };
+  faqs: FaqItem[];
+}
+
+export interface BackcomPageCmsContent {
+  hero: {
+    badge: string;
+    title: string;
+    highlightWord: string;
+    description: string;
+  };
+  explanation: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    paragraph1: string;
+    paragraph2: string;
+    importantNote: string;
+    flowSteps: { actor: string; desc: string }[];
+  };
+  benefits: { title: string; description: string }[];
+  bottomCta: {
+    title: string;
+    description: string;
+  };
+  deepGuide: {
+    badge: string;
+    title: string;
+    intro: string;
+    sections: { heading: string; content: string }[];
+    warnings: string[];
+  };
+}
+
+export interface BrokersPageCmsContent {
+  hero: {
+    badge: string;
+    title: string;
+    description: string;
+  };
+  comparisonTable: {
+    title: string;
+    subtitle: string;
+  };
+}
+
+export interface SitePagesContent {
+  home: HomePageCmsContent;
+  backcom: BackcomPageCmsContent;
+  brokersPage: BrokersPageCmsContent;
 }
 

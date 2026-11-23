@@ -1,25 +1,30 @@
 import Link from "next/link";
 import { ArrowRight, HelpCircle } from "lucide-react";
-import { globalFaqs } from "@/data/faq";
 import { Accordion } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { getSitePagesContent } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Câu hỏi thường gặp (FAQ) — Backcom, Sàn giao dịch & Công cụ",
   description:
-    "Giải đáp 10 câu hỏi trọng tâm về cơ chế hoàn phí Forex Backcom, cách liên kết tài khoản hiện tại, chu kỳ thanh toán, Robot EA và rủi ro Copy Trade.",
+    "Giải đáp các câu hỏi trọng tâm về cơ chế hoàn phí Forex Backcom, cách liên kết tài khoản hiện tại, chu kỳ thanh toán, Robot EA và rủi ro Copy Trade.",
   path: "/faq",
 });
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  const sitePages = await getSitePagesContent();
+  const faqs = sitePages.home.faqs;
+
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: globalFaqs.map((item) => ({
+    mainEntity: faqs.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {
@@ -48,7 +53,7 @@ export default function FaqPage() {
         </div>
 
         <div className="mt-12">
-          <Accordion items={globalFaqs} />
+          <Accordion items={faqs} />
         </div>
 
         <Card className="mt-12 flex flex-col items-center justify-between gap-4 border-gold/35 p-6 text-center sm:flex-row sm:p-8 sm:text-left">

@@ -24,9 +24,13 @@ import { cn } from "@/lib/utils";
 
 interface BrokerDetailTemplateProps {
   broker: Broker;
+  allBrokers?: Broker[];
 }
 
-export function BrokerDetailTemplate({ broker }: BrokerDetailTemplateProps) {
+export function BrokerDetailTemplate({
+  broker,
+  allBrokers,
+}: BrokerDetailTemplateProps) {
   const combinedFaqs = [
     ...broker.faqs,
     ...globalFaqs.filter((f) => f.category === "broker").slice(0, 3),
@@ -478,7 +482,10 @@ export function BrokerDetailTemplate({ broker }: BrokerDetailTemplateProps) {
           />
 
           <div className="mt-8">
-            <BackcomCalculator initialBrokerSlug={broker.slug} />
+            <BackcomCalculator
+              initialBrokerSlug={broker.slug}
+              brokersList={allBrokers}
+            />
           </div>
         </div>
       </section>

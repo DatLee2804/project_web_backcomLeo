@@ -20,12 +20,16 @@ import { Card } from "@/components/ui/card";
 interface MasterChartsProps {
   equityCurve: EquityPoint[];
   monthlyReturns: MonthlyReturnPoint[];
+  isDemo?: boolean;
 }
 
 export function MasterCharts({
   equityCurve,
   monthlyReturns,
+  isDemo = true,
 }: MasterChartsProps) {
+  const tagSuffix = isDemo ? " (Demo)" : "";
+
   return (
     <div className="space-y-8">
       {/* 3. Equity Curve */}
@@ -33,14 +37,20 @@ export function MasterCharts({
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h3 className="font-heading text-lg font-bold text-ink-primary">
-              Biểu đồ Đường cong Vốn — Equity vs Balance (Mô phỏng cấu trúc)
+              Biểu đồ Đường cong Vốn — Equity vs Balance
             </h3>
             <p className="text-xs text-ink-muted">
-              Đơn vị minh họa: USD (Vốn gốc mô phỏng $10,000) • Dữ liệu giao diện
-              DEMO
+              Đơn vị: USD{" "}
+              {isDemo
+                ? "• Dữ liệu mô phỏng giao diện DEMO"
+                : "• Dữ liệu hồ sơ chiến lược"}
             </p>
           </div>
-          <Badge variant="demo">BIỂU ĐỒ MINH HỌA DEMO</Badge>
+          {isDemo ? (
+            <Badge variant="demo">BIỂU ĐỒ MINH HỌA DEMO</Badge>
+          ) : (
+            <Badge variant="gold">EQUITY ANALYTICS</Badge>
+          )}
         </div>
 
         <div className="mt-6 h-72 w-full">
@@ -50,7 +60,13 @@ export function MasterCharts({
               margin={{ top: 10, right: 16, left: 0, bottom: 0 }}
             >
               <defs>
-                <linearGradient id="oceanEquityGrad" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient
+                  id="oceanEquityGrad"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
                   <stop offset="5%" stopColor="#00C2FF" stopOpacity={0.36} />
                   <stop offset="95%" stopColor="#00C2FF" stopOpacity={0.0} />
                 </linearGradient>
@@ -84,7 +100,7 @@ export function MasterCharts({
               <Area
                 type="monotone"
                 dataKey="balance"
-                name="Balance (Demo)"
+                name={`Balance${tagSuffix}`}
                 stroke="#94A8C4"
                 strokeDasharray="4 4"
                 fill="none"
@@ -93,7 +109,7 @@ export function MasterCharts({
               <Area
                 type="monotone"
                 dataKey="equity"
-                name="Equity (Demo)"
+                name={`Equity${tagSuffix}`}
                 stroke="#00C2FF"
                 fillOpacity={1}
                 fill="url(#oceanEquityGrad)"
@@ -113,10 +129,14 @@ export function MasterCharts({
                 Biến động theo tháng — Monthly Returns (%)
               </h3>
               <p className="text-xs text-ink-muted">
-                Minh họa cả tháng dương và tháng âm thực tế trong giao dịch
+                Tỷ suất biến động lợi nhuận qua từng tháng giao dịch
               </p>
             </div>
-            <Badge variant="demo">DEMO</Badge>
+            {isDemo ? (
+              <Badge variant="demo">DEMO</Badge>
+            ) : (
+              <Badge variant="neutral">MONTHLY</Badge>
+            )}
           </div>
 
           <div className="mt-5 h-60 w-full">
@@ -149,7 +169,7 @@ export function MasterCharts({
                     fontSize: "12px",
                   }}
                   formatter={(value: number) => [
-                    `${value > 0 ? "+" : ""}${value}% (Demo)`,
+                    `${value > 0 ? "+" : ""}${value}%${tagSuffix}`,
                     "Biến động tháng",
                   ]}
                 />
@@ -176,7 +196,11 @@ export function MasterCharts({
                 Theo dõi biên độ sụt giảm tài sản tạm thời qua các chu kỳ
               </p>
             </div>
-            <Badge variant="demo">DEMO</Badge>
+            {isDemo ? (
+              <Badge variant="demo">DEMO</Badge>
+            ) : (
+              <Badge variant="danger">DRAWDOWN</Badge>
+            )}
           </div>
 
           <div className="mt-5 h-60 w-full">
@@ -215,7 +239,7 @@ export function MasterCharts({
                     fontSize: "12px",
                   }}
                   formatter={(value: number) => [
-                    `${value}% (Demo)`,
+                    `${value}%${tagSuffix}`,
                     "Drawdown",
                   ]}
                 />

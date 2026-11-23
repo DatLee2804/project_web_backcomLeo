@@ -4,20 +4,29 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Info, RotateCcw } from "lucide-react";
-import { masterTraders } from "@/data/masters";
+import { masterTraders as seedMasters } from "@/data/masters";
 import type { MasterTrader } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { InteractiveCard } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function MastersExplorer() {
+export function MastersExplorer({
+  items = seedMasters,
+}: {
+  items?: MasterTrader[];
+}) {
   const [riskFilter, setRiskFilter] = React.useState<string>("all");
   const [periodFilter, setPeriodFilter] = React.useState<string>("all");
   const [roiSort, setRoiSort] = React.useState<string>("desc");
 
+  const hasAnyDemo = React.useMemo(
+    () => items.some((m) => m.isDemo),
+    [items]
+  );
+
   const filteredMasters = React.useMemo(() => {
-    let list: MasterTrader[] = [...masterTraders];
+    let list: MasterTrader[] = [...items];
 
     if (riskFilter !== "all") {
       list = list.filter((m) => m.riskLevel === riskFilter);
@@ -38,7 +47,7 @@ export function MastersExplorer() {
     }
 
     return list;
-  }, [riskFilter, periodFilter, roiSort]);
+  }, [items, riskFilter, periodFilter, roiSort]);
 
   const resetFilters = () => {
     setRiskFilter("all");
@@ -54,16 +63,18 @@ export function MastersExplorer() {
 
   return (
     <div>
-      {/* Demo Transparency Callout */}
-      <div className="mb-8 flex items-start gap-3 rounded-card border border-sky-400/30 bg-sky-500/10 p-4 text-xs leading-relaxed text-sky-200 sm:text-sm">
-        <Info className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" />
-        <div>
-          <strong>Thông báo dữ liệu DEMO:</strong> Danh sách Master Trader dưới
-          đây là các hồ sơ dữ liệu mô phỏng (gắn nhãn <code>DEMO</code>) nhằm
-          giới thiệu giao diện phân tích chỉ số rủi ro của hệ sinh thái. Đây
-          không phải kết quả đầu tư thực tế hay cam kết lợi nhuận.
+      {/* Conditional Demo Transparency Callout */}
+      {hasAnyDemo && (
+        <div className="mb-8 flex items-start gap-3 rounded-card border border-gold/30 bg-gold/10 p-4 text-xs leading-relaxed text-ink-secondary sm:text-sm">
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-gold-light" />
+          <div>
+            <strong className="text-gold-light">Ghi chú phân loại hồ sơ:</strong>{" "}
+            Các hồ sơ có gắn nhãn <code>DEMO</code> là dữ liệu mô phỏng giao
+            diện; các hồ sơ gắn nhãn <code>MASTER</code> là chiến lược chính
+            thức do quản trị viên cập nhật.
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Filter Bar */}
       <div className="grid gap-4 rounded-card border border-line bg-card p-4 sm:grid-cols-4 sm:p-5">
@@ -80,8 +91,8 @@ export function MastersExplorer() {
             onChange={(e) => setRoiSort(e.target.value)}
             className="h-10 w-full rounded-input border border-line-strong bg-background-secondary px-3 text-xs text-ink-primary focus:border-gold focus:outline-none sm:text-sm"
           >
-            <option value="desc">ROI (Demo): Cao đến thấp</option>
-            <option value="asc">ROI (Demo): Thấp đến cao</option>
+            <option value="desc">ROI: Cao đến thấp</option>
+            <option value="asc">ROI: Thấp đến cao</option>
             <option value="dd_low">Max Drawdown: Thấp nhất trước</option>
           </select>
         </div>
@@ -144,7 +155,7 @@ export function MastersExplorer() {
       {filteredMasters.length === 0 ? (
         <div className="mt-8 rounded-card border border-dashed border-line-strong bg-card p-10 text-center">
           <p className="text-sm text-ink-secondary">
-            Không có hồ sơ Master Demo nào khớp với bộ lọc hiện tại.
+            Không có hồ sơ Master nào khớp với bộ lọc hiện tại.
           </p>
           <button
             type="button"
@@ -169,17 +180,15 @@ export function MastersExplorer() {
                   <div className="flex items-center gap-3.5">
                     <Image
                       src={master.avatar}
-                      alt={`Avatar minh họa ${master.name}`}
+                      alt={`Avatar ${master.name}`}
                       width={56}
                       height={56}
-                      className="h-14 w-14 rounded-2xl"
+                      className="h-14 w-14 rounded-2xl object-cover"
                     />
                     <div>
-                      <div className="flex items-center gap-2">
-                        <h2 className="font-heading text-lg font-bold text-ink-primary">
-                          {master.name}
-                        </h2>
-                      </div>
+                      <h2 className="font-heading text-lg font-bold text-ink-primary">
+                        {master.name}
+                      </h2>
                       <p className="mt-0.5 text-xs text-ink-secondary">
                         {master.strategyName}
                       </p>
@@ -190,7 +199,11 @@ export function MastersExplorer() {
                     <Badge variant={getRiskBadgeVariant(master.riskLevel)}>
                       Risk: {master.riskLevel}
                     </Badge>
-                    <Badge variant="demo">DEMO</Badge>
+                    {master.isDemo ? (
+                      <Badge variant="demo">DEMO</Badge>
+                    ) : (
+                      <Badge variant="featured">MASTER</Badge>
+                    )}
                   </div>
                 </div>
 
@@ -201,7 +214,9 @@ export function MastersExplorer() {
                 {/* 4 Key Metrics */}
                 <div className="mt-5 grid grid-cols-2 gap-3 rounded-xl border border-line bg-background-secondary p-4 sm:grid-cols-4">
                   <div>
-                    <div className="text-[11px] text-ink-muted">ROI (Demo)</div>
+                    <div className="text-[11px] text-ink-muted">
+                      ROI {master.isDemo ? "(Demo)" : ""}
+                    </div>
                     <div className="mt-1 font-heading text-lg font-bold text-success tabular-nums-fin">
                       +{master.roiPct.toFixed(1)}%
                     </div>
@@ -239,7 +254,7 @@ export function MastersExplorer() {
                     buttonVariants({ variant: "primary", size: "sm" })
                   )}
                 >
-                  View Profile (Demo)
+                  View Profile
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
@@ -250,4 +265,3 @@ export function MastersExplorer() {
     </div>
   );
 }
-

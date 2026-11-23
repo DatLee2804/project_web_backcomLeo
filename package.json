@@ -4,7 +4,9 @@
   "private": true,
   "description": "BACKCOM MR LEO - Hệ sinh thái Forex Rebate, Sàn giao dịch, Trading Tools, Robot & Copy Trade",
   "scripts": {
+    "predev": "node -e \"const fs=require('fs');if(fs.existsSync('.next')&&(!fs.existsSync('.next/routes-manifest.json')||!fs.existsSync('.next/server/middleware-manifest.json'))){fs.rmSync('.next',{recursive:true,force:true})}\"",
     "dev": "next dev",
+    "dev:turbo": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -12,6 +14,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@supabase/supabase-js": "^2.119.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.4.7",
@@ -37,4 +40,3 @@
     "typescript": "^5.7.3"
   }
 }
-

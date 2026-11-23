@@ -200,3 +200,36 @@ pm2 start npm --name "backcom-mr-leo" -- start
 ```
 Sau đó cấu hình Nginx Reverse Proxy từ cổng `80/443` của tên miền `backcommrleo.com.vn` về `http://127.0.0.1:3000` và cài đặt chứng chỉ SSL bằng Certbot (`Let's Encrypt`).
 
+
+
+---
+
+## 10. Hướng dẫn Thiết lập Admin Backend (`/admin`) & Supabase
+
+Hệ thống tích hợp sẵn trang quản trị đầy đủ tại đường dẫn `/admin` (quản lý **Indicators**, **Bot Trading**, **Master Copy Trade**, **Sàn & Biểu phí Backcom** và **Khách hàng Tư vấn**).
+
+### Bước 1: Tạo Project trên Supabase (Miễn phí)
+1. Truy cập https://supabase.com/dashboard và tạo một Project mới.
+2. Mở mục **SQL Editor** ở thanh bên trái → bấm **New Query**.
+3. Copy toàn bộ nội dung file `supabase/schema.sql` trong dự án này dán vào rồi bấm **Run** (lệnh này tự tạo 5 bảng dữ liệu + bucket lưu trữ ảnh `media`).
+4. Vào mục **Project Settings → API** để lấy:
+   - `Project URL` → gán vào `NEXT_PUBLIC_SUPABASE_URL`
+   - `service_role` (secret key) → gán vào `SUPABASE_SERVICE_ROLE_KEY`
+
+### Bước 2: Cấu hình Biến Môi trường (`.env.local` & Vercel)
+Thêm các biến sau vào file `.env.local` (khi chạy máy cá nhân) và mục **Settings → Environment Variables** trên Vercel:
+
+```env
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=MatKhauManhCuaBan_2026!
+ADMIN_SESSION_SECRET=ChuoiBiMatNgauNhienDai32KyTuTroLen
+
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI...
+SUPABASE_STORAGE_BUCKET=media
+```
+
+### Bước 3: Đăng nhập & Khởi tạo dữ liệu lần đầu
+1. Truy cập `/admin/login` (ví dụ `https://backcommrleo.vercel.app/admin/login` hoặc `http://localhost:3000/admin/login`).
+2. Đăng nhập bằng `ADMIN_USERNAME` và `ADMIN_PASSWORD`.
+3. Tại màn hình Tổng quan `/admin`, nhấn nút **"Khởi tạo dữ liệu gốc lên Database"** 1 lần đầu tiên để chép toàn bộ dữ liệu mẫu lên bảng Supabase, sau đó tự do Thêm / Sửa / Ẩn / Xóa sản phẩm và tải ảnh trực tiếp từ máy tính!

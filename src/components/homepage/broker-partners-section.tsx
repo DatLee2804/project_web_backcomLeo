@@ -1,26 +1,27 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { brokers } from "@/data/brokers";
+import { brokers as seedBrokers } from "@/data/brokers";
+import type { Broker } from "@/types";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { InteractiveCard } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// Exact order in Section 02: Exness, Tickmill, FxPro, Austex Markets, BCR
-const SECTION_02_ORDER: Array<(typeof brokers)[number]["slug"]> = [
-  "exness",
-  "tickmill",
-  "fxpro",
-  "austex",
-  "bcr",
-];
+const SECTION_02_ORDER = ["exness", "tickmill", "fxpro", "austex", "bcr"];
 
-export function BrokerPartnersSection() {
-  const orderedList = SECTION_02_ORDER.map(
-    (slug) => brokers.find((b) => b.slug === slug)!
-  );
+export function BrokerPartnersSection({
+  brokersList,
+}: {
+  brokersList?: Broker[];
+}) {
+  const source = brokersList ?? seedBrokers;
+  const knownOrdered = SECTION_02_ORDER.map((slug) =>
+    source.find((b) => b.slug === slug)
+  ).filter((b): b is Broker => Boolean(b));
+  const extras = source.filter((b) => !SECTION_02_ORDER.includes(b.slug));
+  const orderedList = [...knownOrdered, ...extras];
 
   return (
     <section className="border-b border-line bg-background-secondary py-12 sm:py-14 lg:py-16">

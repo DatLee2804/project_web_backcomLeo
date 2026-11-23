@@ -1,10 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getOrderedBrokers } from "@/data/brokers";
+import type { Broker } from "@/types";
 import { cn } from "@/lib/utils";
 
-export function BrokerLogoMarquee() {
-  const brokers = getOrderedBrokers();
+export function BrokerLogoMarquee({
+  brokersList,
+}: {
+  brokersList?: Broker[];
+}) {
+  const brokers = brokersList ?? getOrderedBrokers();
   // Repeat list inside each half so even ultra-wide monitors have a full continuous strip
   const halfTrack = [...brokers, ...brokers];
 

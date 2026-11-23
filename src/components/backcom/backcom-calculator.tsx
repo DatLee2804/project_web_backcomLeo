@@ -21,6 +21,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 interface BackcomCalculatorProps {
   initialBrokerSlug?: Broker["slug"];
+  brokersList?: Broker[];
   lockBroker?: boolean;
   isLoading?: boolean;
   className?: string;
@@ -51,11 +52,15 @@ const METHOD_LABELS: Record<
 
 export function BackcomCalculator({
   initialBrokerSlug = "austex",
+  brokersList,
   lockBroker = false,
   isLoading = false,
   className,
 }: BackcomCalculatorProps) {
-  const orderedBrokers = React.useMemo(() => getOrderedBrokers(), []);
+  const orderedBrokers = React.useMemo(
+    () => brokersList ?? getOrderedBrokers(),
+    [brokersList]
+  );
 
   const [selectedBrokerSlug, setSelectedBrokerSlug] =
     React.useState<Broker["slug"]>(initialBrokerSlug);

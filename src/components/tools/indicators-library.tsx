@@ -4,36 +4,49 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import { tradingIndicators } from "@/data/indicators";
+import { tradingIndicators as seedIndicators } from "@/data/indicators";
+import type { TradingIndicator } from "@/types";
 import { Tabs, type TabOption } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { InteractiveCard } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const PLATFORM_TABS: TabOption[] = [
-  { id: "all", label: "Tất cả chỉ báo", badge: "4" },
-  { id: "TradingView", label: "TradingView", badge: "2" },
-  { id: "MT5", label: "MT4 / MT5", badge: "2" },
-];
+interface IndicatorsLibraryProps {
+  items?: TradingIndicator[];
+}
 
-export function IndicatorsLibrary() {
+export function IndicatorsLibrary({
+  items = seedIndicators,
+}: IndicatorsLibraryProps) {
   const [platformFilter, setPlatformFilter] = React.useState<string>("all");
 
+  const platformTabs: TabOption[] = React.useMemo(() => {
+    const tvCount = items.filter((i) => i.platform === "TradingView").length;
+    const mtCount = items.filter(
+      (i) => i.platform === "MT5" || i.platform === "MT4/MT5"
+    ).length;
+    return [
+      { id: "all", label: "Tất cả chỉ báo", badge: String(items.length) },
+      { id: "TradingView", label: "TradingView", badge: String(tvCount) },
+      { id: "MT5", label: "MT4 / MT5", badge: String(mtCount) },
+    ];
+  }, [items]);
+
   const filtered = React.useMemo(() => {
-    if (platformFilter === "all") return tradingIndicators;
+    if (platformFilter === "all") return items;
     if (platformFilter === "MT5") {
-      return tradingIndicators.filter(
+      return items.filter(
         (item) => item.platform === "MT5" || item.platform === "MT4/MT5"
       );
     }
-    return tradingIndicators.filter((item) => item.platform === platformFilter);
-  }, [platformFilter]);
+    return items.filter((item) => item.platform === platformFilter);
+  }, [items, platformFilter]);
 
   return (
     <div>
       <Tabs
-        options={PLATFORM_TABS}
+        options={platformTabs}
         value={platformFilter}
         onChange={setPlatformFilter}
       />
@@ -41,7 +54,7 @@ export function IndicatorsLibrary() {
       <div className="mt-8 grid gap-7 md:grid-cols-2">
         {filtered.map((ind) => (
           <InteractiveCard
-            key={ind.id}
+            key={ind.slug}
             className="flex flex-col overflow-hidden"
           >
             <Link

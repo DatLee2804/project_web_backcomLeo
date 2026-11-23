@@ -8,13 +8,15 @@ import {
   Cpu,
   Server,
 } from "lucide-react";
-import { tradingRobots } from "@/data/robots";
+import { getLiveRobots } from "@/lib/cms";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = constructMetadata({
   title: "Bot Trading & Giải pháp Expert Advisor (EA MT5)",
@@ -23,7 +25,8 @@ export const metadata = constructMetadata({
   path: "/robots",
 });
 
-export default function RobotsPage() {
+export default async function RobotsPage() {
+  const tradingRobots = await getLiveRobots();
   const firstBot = tradingRobots[0];
 
   return (
