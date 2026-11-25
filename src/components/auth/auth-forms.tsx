@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -116,8 +117,19 @@ export function LoginCard({
   return (
     <Card className="tech-glass-panel mx-auto w-full max-w-md border-line-strong p-6 sm:p-8">
       <div className="flex items-center justify-between">
-        <Badge variant="gold">MEMBER &amp; ADMIN ACCESS</Badge>
-        <ShieldCheck className="h-5 w-5 text-gold" />
+        <span className="inline-flex h-10 items-center overflow-hidden rounded-xl border border-gold/40 bg-[#162029] px-2 py-1">
+          <Image
+            src="/images/brand/leo-logo.png"
+            alt="Leo Trading - Backcom Mr Leo"
+            width={160}
+            height={63}
+            className="h-full w-auto object-contain"
+          />
+        </span>
+        <div className="flex items-center gap-1.5">
+          <Badge variant="gold">MEMBER &amp; ADMIN</Badge>
+          <ShieldCheck className="h-4 w-4 text-gold" />
+        </div>
       </div>
 
       <h1 className="mt-4 font-heading text-2xl font-extrabold text-ink-primary sm:text-3xl">
@@ -327,8 +339,19 @@ export function RegisterCard({
   return (
     <Card className="tech-glass-panel mx-auto w-full max-w-md border-line-strong p-6 sm:p-8">
       <div className="flex items-center justify-between">
-        <Badge variant="gold">CREATE ACCOUNT</Badge>
-        <ShieldCheck className="h-5 w-5 text-gold" />
+        <span className="inline-flex h-10 items-center overflow-hidden rounded-xl border border-gold/40 bg-[#162029] px-2 py-1">
+          <Image
+            src="/images/brand/leo-logo.png"
+            alt="Leo Trading - Backcom Mr Leo"
+            width={160}
+            height={63}
+            className="h-full w-auto object-contain"
+          />
+        </span>
+        <div className="flex items-center gap-1.5">
+          <Badge variant="gold">CREATE ACCOUNT</Badge>
+          <ShieldCheck className="h-4 w-4 text-gold" />
+        </div>
       </div>
 
       <h1 className="mt-4 font-heading text-2xl font-extrabold text-ink-primary sm:text-3xl">

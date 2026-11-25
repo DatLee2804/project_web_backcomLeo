@@ -27,6 +27,11 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_CONFIG.name}`,
   },
   description: SITE_CONFIG.description,
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    shortcut: ["/icon.png"],
+    apple: [{ url: "/icon.png", type: "image/png" }],
+  },
   openGraph: {
     title: `${SITE_CONFIG.name} — ${SITE_CONFIG.slogan}`,
     description: SITE_CONFIG.description,
@@ -34,6 +39,14 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.name,
     locale: SITE_CONFIG.locale,
     type: "website",
+    images: [
+      {
+        url: "/images/brand/leo-logo-full.jpg",
+        width: 491,
+        height: 229,
+        alt: `${SITE_CONFIG.name} - ${SITE_CONFIG.slogan}`,
+      },
+    ],
   },
 };
 
@@ -47,6 +60,7 @@ export default function RootLayout({
     "@type": "FinancialService",
     name: SITE_CONFIG.name,
     url: SITE_CONFIG.domain,
+    logo: `${SITE_CONFIG.domain}/images/brand/leo-logo.png`,
     slogan: SITE_CONFIG.slogan,
     description: SITE_CONFIG.description,
     areaServed: "VN",

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -197,17 +198,22 @@ export function Header() {
             href="/"
             className="group flex shrink-0 items-center gap-2.5 focus:outline-none"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-gold/50 bg-[#0A1C33] text-gold-light shadow-[0_0_18px_rgba(0,194,255,0.28)] transition-transform duration-200 group-hover:scale-105">
-              <span className="font-heading text-xs font-extrabold tracking-tight">
-                ML
-              </span>
+            <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-gold/50 bg-[#162029] shadow-[0_0_18px_rgba(0,194,255,0.28)] transition-transform duration-200 group-hover:scale-105 sm:h-11 sm:w-11">
+              <Image
+                src="/images/brand/leo-emblem.png"
+                alt="Logo thương hiệu Backcom Mr Leo"
+                width={88}
+                height={88}
+                priority
+                className="h-full w-full object-cover"
+              />
             </span>
             <div className="flex flex-col">
               <span className="font-heading text-sm font-extrabold tracking-wider text-ink-primary sm:text-base">
                 BACKCOM <span className="text-gold-gradient">MR LEO</span>
               </span>
               <span className="hidden text-[9px] font-semibold tracking-[0.18em] text-ink-muted sm:block">
-                FINTECH ECOSYSTEM
+                LEO TRADING ECOSYSTEM
               </span>
             </div>
           </Link>

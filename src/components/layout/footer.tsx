@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -44,9 +45,15 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
           {/* Column 1: Brand */}
           <div className="lg:col-span-4">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/50 bg-[#09192E] text-gold-light shadow-[0_0_16px_rgba(0,194,255,0.22)]">
-                <span className="font-heading text-sm font-extrabold">ML</span>
+            <Link href="/" className="group inline-flex items-center gap-3">
+              <span className="inline-flex h-12 items-center overflow-hidden rounded-xl border border-gold/45 bg-[#162029] px-2 py-1 shadow-[0_0_18px_rgba(0,194,255,0.2)] transition-transform duration-200 group-hover:scale-[1.02]">
+                <Image
+                  src="/images/brand/leo-logo.png"
+                  alt="Logo thương hiệu Leo Trading - Backcom Mr Leo"
+                  width={206}
+                  height={81}
+                  className="h-full w-auto object-contain"
+                />
               </span>
               <div>
                 <div className="font-heading text-base font-extrabold tracking-wider text-ink-primary">

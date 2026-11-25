@@ -35,6 +35,11 @@ export function constructMetadata({
     title: fullTitle,
     description,
     metadataBase: new URL(SITE_CONFIG.domain),
+    icons: {
+      icon: [{ url: "/icon.png", type: "image/png" }],
+      shortcut: ["/icon.png"],
+      apple: [{ url: "/icon.png", type: "image/png" }],
+    },
     alternates: {
       canonical: canonicalUrl,
     },

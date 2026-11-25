@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -92,8 +93,14 @@ export function AdminShell({
       <aside className="w-full shrink-0 border-b border-line bg-[#050C17] lg:w-64 lg:border-b-0 lg:border-r">
         <div className="flex h-16 items-center justify-between border-b border-line px-5">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-gradient font-heading text-xs font-extrabold text-[#020813]">
-              ML
+            <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gold/45 bg-[#162029] shadow-[0_0_14px_rgba(0,194,255,0.22)]">
+              <Image
+                src="/images/brand/leo-emblem.png"
+                alt="Backcom Mr Leo Admin"
+                width={72}
+                height={72}
+                className="h-full w-full object-cover"
+              />
             </span>
             <div>
               <div className="font-heading text-xs font-extrabold tracking-wider text-ink-primary">

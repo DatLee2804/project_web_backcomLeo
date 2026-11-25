@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { AlertTriangle, ArrowLeft, Lock, ShieldCheck } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -67,8 +68,16 @@ export function AdminLoginForm({
 
         <Card className="border-line-strong p-7 sm:p-8">
           <div className="flex items-center justify-between">
+            <span className="inline-flex h-10 items-center overflow-hidden rounded-xl border border-gold/40 bg-[#162029] px-2 py-1">
+              <Image
+                src="/images/brand/leo-logo.png"
+                alt="Leo Trading"
+                width={160}
+                height={63}
+                className="h-full w-auto object-contain"
+              />
+            </span>
             <Badge variant="gold">ADMIN PORTAL</Badge>
-            <ShieldCheck className="h-5 w-5 text-gold" />
           </div>
 
           <h1 className="mt-4 font-heading text-2xl font-extrabold text-ink-primary">
