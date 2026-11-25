@@ -24,7 +24,7 @@ import {
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Hệ sinh thái Forex Rebate, Sàn giao dịch & Công cụ Trading",

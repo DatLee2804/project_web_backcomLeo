@@ -12,7 +12,7 @@ import { getSitePagesContent } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Backcom là gì? Giải thích chuyên sâu về Forex Rebate & IB Commission",

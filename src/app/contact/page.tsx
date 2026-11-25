@@ -7,7 +7,7 @@ import { getLiveBrokers } from "@/lib/cms";
 import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Liên hệ Tư vấn Liên kết Sàn & Nhận Backcom",

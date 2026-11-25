@@ -16,7 +16,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Về Backcom Mr Leo — Định vị Thương hiệu & Hệ sinh thái Trading",

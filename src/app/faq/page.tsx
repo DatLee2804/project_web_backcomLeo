@@ -8,7 +8,7 @@ import { getSitePagesContent } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Câu hỏi thường gặp (FAQ) — Backcom, Sàn giao dịch & Công cụ",

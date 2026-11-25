@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import type {
   AppUser,
   Broker,
@@ -30,6 +31,16 @@ interface LocalCmsDatabase {
 }
 
 const LOCAL_DB_PATH = path.join(process.cwd(), "data", "local-cms-db.json");
+export const CMS_CACHE_TAG = "cms-data";
+
+export function purgeCmsCache(): void {
+  try {
+    revalidateTag(CMS_CACHE_TAG);
+    revalidatePath("/", "layout");
+  } catch {
+    // Ignore if invoked outside a Next.js request context
+  }
+}
 
 function createInitialSeedDb(): LocalCmsDatabase {
   return {
@@ -202,6 +213,8 @@ export async function seedDefaultDataToStorage(): Promise<{
     .upsert(brokerRows, { onConflict: "slug", ignoreDuplicates: true });
   if (e4) throw new Error(`Lỗi khởi tạo bảng cms_brokers: ${e4.message}`);
 
+  purgeCmsCache();
+
   return {
     indicators: indRows.length,
     robots: botRows.length,
@@ -234,9 +247,17 @@ export async function getAllIndicatorsAdmin(): Promise<TradingIndicator[]> {
   return local.indicators;
 }
 
+const getCachedLiveIndicators = unstable_cache(
+  async (): Promise<TradingIndicator[]> => {
+    const all = await getAllIndicatorsAdmin();
+    return all.filter((item) => item.isPublished !== false);
+  },
+  ["cms-live-indicators"],
+  { tags: [CMS_CACHE_TAG], revalidate: 300 }
+);
+
 export async function getLiveIndicators(): Promise<TradingIndicator[]> {
-  const all = await getAllIndicatorsAdmin();
-  return all.filter((item) => item.isPublished !== false);
+  return getCachedLiveIndicators();
 }
 
 export async function getLiveIndicatorBySlug(
@@ -277,6 +298,7 @@ export async function upsertIndicator(
       { onConflict: "slug" }
     );
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return normalized;
   }
 
@@ -285,6 +307,7 @@ export async function upsertIndicator(
   if (idx >= 0) db.indicators[idx] = normalized;
   else db.indicators.push(normalized);
   await writeLocalDb(db);
+  purgeCmsCache();
   return normalized;
 }
 
@@ -298,11 +321,13 @@ export async function deleteIndicator(slug: string): Promise<void> {
 
     const { error } = await sb.from("cms_indicators").delete().eq("slug", slug);
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return;
   }
   const db = await readLocalDb();
   db.indicators = db.indicators.filter((x) => x.slug !== slug);
   await writeLocalDb(db);
+  purgeCmsCache();
 }
 
 // ============================================================================
@@ -329,9 +354,17 @@ export async function getAllRobotsAdmin(): Promise<TradingRobot[]> {
   return local.robots;
 }
 
+const getCachedLiveRobots = unstable_cache(
+  async (): Promise<TradingRobot[]> => {
+    const all = await getAllRobotsAdmin();
+    return all.filter((item) => item.isPublished !== false);
+  },
+  ["cms-live-robots"],
+  { tags: [CMS_CACHE_TAG], revalidate: 300 }
+);
+
 export async function getLiveRobots(): Promise<TradingRobot[]> {
-  const all = await getAllRobotsAdmin();
-  return all.filter((item) => item.isPublished !== false);
+  return getCachedLiveRobots();
 }
 
 export async function getLiveRobotBySlug(
@@ -366,6 +399,7 @@ export async function upsertRobot(robot: TradingRobot): Promise<TradingRobot> {
       { onConflict: "slug" }
     );
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return normalized;
   }
 
@@ -374,6 +408,7 @@ export async function upsertRobot(robot: TradingRobot): Promise<TradingRobot> {
   if (idx >= 0) db.robots[idx] = normalized;
   else db.robots.push(normalized);
   await writeLocalDb(db);
+  purgeCmsCache();
   return normalized;
 }
 
@@ -387,11 +422,13 @@ export async function deleteRobot(slug: string): Promise<void> {
 
     const { error } = await sb.from("cms_robots").delete().eq("slug", slug);
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return;
   }
   const db = await readLocalDb();
   db.robots = db.robots.filter((x) => x.slug !== slug);
   await writeLocalDb(db);
+  purgeCmsCache();
 }
 
 // ============================================================================
@@ -418,9 +455,17 @@ export async function getAllMastersAdmin(): Promise<MasterTrader[]> {
   return local.masters;
 }
 
+const getCachedLiveMasters = unstable_cache(
+  async (): Promise<MasterTrader[]> => {
+    const all = await getAllMastersAdmin();
+    return all.filter((item) => item.isPublished !== false);
+  },
+  ["cms-live-masters"],
+  { tags: [CMS_CACHE_TAG], revalidate: 300 }
+);
+
 export async function getLiveMasters(): Promise<MasterTrader[]> {
-  const all = await getAllMastersAdmin();
-  return all.filter((item) => item.isPublished !== false);
+  return getCachedLiveMasters();
 }
 
 export async function getLiveMasterBySlug(
@@ -457,6 +502,7 @@ export async function upsertMaster(
       { onConflict: "slug" }
     );
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return normalized;
   }
 
@@ -465,6 +511,7 @@ export async function upsertMaster(
   if (idx >= 0) db.masters[idx] = normalized;
   else db.masters.push(normalized);
   await writeLocalDb(db);
+  purgeCmsCache();
   return normalized;
 }
 
@@ -478,11 +525,13 @@ export async function deleteMaster(slug: string): Promise<void> {
 
     const { error } = await sb.from("cms_masters").delete().eq("slug", slug);
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return;
   }
   const db = await readLocalDb();
   db.masters = db.masters.filter((x) => x.slug !== slug);
   await writeLocalDb(db);
+  purgeCmsCache();
 }
 
 // ============================================================================
@@ -526,11 +575,19 @@ export async function getAllBrokersAdmin(): Promise<Broker[]> {
     .sort((a, b) => a.priorityOrder - b.priorityOrder);
 }
 
+const getCachedLiveBrokers = unstable_cache(
+  async (): Promise<Broker[]> => {
+    const all = await getAllBrokersAdmin();
+    return all
+      .filter((item) => item.isPublished !== false)
+      .sort((a, b) => a.priorityOrder - b.priorityOrder);
+  },
+  ["cms-live-brokers"],
+  { tags: [CMS_CACHE_TAG], revalidate: 300 }
+);
+
 export async function getLiveBrokers(): Promise<Broker[]> {
-  const all = await getAllBrokersAdmin();
-  return all
-    .filter((item) => item.isPublished !== false)
-    .sort((a, b) => a.priorityOrder - b.priorityOrder);
+  return getCachedLiveBrokers();
 }
 
 export async function getLiveBrokerBySlug(
@@ -565,6 +622,7 @@ export async function upsertBroker(broker: Broker): Promise<Broker> {
       { onConflict: "slug" }
     );
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return normalized;
   }
 
@@ -573,6 +631,7 @@ export async function upsertBroker(broker: Broker): Promise<Broker> {
   if (idx >= 0) db.brokers[idx] = normalized;
   else db.brokers.push(normalized);
   await writeLocalDb(db);
+  purgeCmsCache();
   return normalized;
 }
 
@@ -586,11 +645,13 @@ export async function deleteBroker(slug: string): Promise<void> {
 
     const { error } = await sb.from("cms_brokers").delete().eq("slug", slug);
     if (error) throw new Error(error.message);
+    purgeCmsCache();
     return;
   }
   const db = await readLocalDb();
   db.brokers = db.brokers.filter((x) => x.slug !== slug);
   await writeLocalDb(db);
+  purgeCmsCache();
 }
 
 // ============================================================================
@@ -940,7 +1001,7 @@ export async function deleteUserAdmin(id: string): Promise<void> {
 // ============================================================================
 // 7. SITE PAGES CONTENT & MEDIA (HOME, BACKCOM, BROKERS LANDING)
 // ============================================================================
-export async function getSitePagesContent(): Promise<SitePagesContent> {
+export async function getSitePagesContentAdmin(): Promise<SitePagesContent> {
   const sb = getSupabaseAdmin();
   if (sb) {
     const { data, error } = await sb
@@ -966,6 +1027,16 @@ export async function getSitePagesContent(): Promise<SitePagesContent> {
   return local.pages ?? structuredClone(defaultSitePagesContent);
 }
 
+const getCachedSitePagesContent = unstable_cache(
+  async (): Promise<SitePagesContent> => getSitePagesContentAdmin(),
+  ["cms-site-pages"],
+  { tags: [CMS_CACHE_TAG], revalidate: 300 }
+);
+
+export async function getSitePagesContent(): Promise<SitePagesContent> {
+  return getCachedSitePagesContent();
+}
+
 export async function saveSitePagesContent(
   content: SitePagesContent
 ): Promise<SitePagesContent> {
@@ -984,11 +1055,13 @@ export async function saveSitePagesContent(
         `Không thể lưu nội dung trang lên Supabase (${error.message}). Hãy chạy phần bảng cms_pages trong supabase/schema.sql.`
       );
     }
+    purgeCmsCache();
     return content;
   }
 
   const db = await readLocalDb();
   db.pages = content;
   await writeLocalDb(db);
+  purgeCmsCache();
   return content;
 }

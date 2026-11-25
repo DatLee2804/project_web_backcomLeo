@@ -12,7 +12,7 @@ import {
   ShieldAlert,
   Terminal,
 } from "lucide-react";
-import { getLiveRobotBySlug } from "@/lib/cms";
+import { getLiveRobotBySlug, getLiveRobots } from "@/lib/cms";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Accordion } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const robots = await getLiveRobots();
+  return robots.map((r) => ({ slug: r.slug }));
+}
 
 interface RobotDetailPageProps {
   params: Promise<{ slug: string }>;

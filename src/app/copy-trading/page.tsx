@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { getLiveMasters } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Copy Trading & Danh sách Master Traders",

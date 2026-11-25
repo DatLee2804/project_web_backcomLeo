@@ -3,7 +3,7 @@ import { getAdminSession } from "@/lib/auth";
 import {
   getAllLeadsAdmin,
   getCmsStorageInfo,
-  getSitePagesContent,
+  getSitePagesContentAdmin,
 } from "@/lib/cms";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { PagesContentManager } from "@/components/admin/pages-content-manager";
@@ -27,7 +27,7 @@ export default async function AdminPagesContentPage() {
 
   const [storageInfo, sitePages, leads] = await Promise.all([
     getCmsStorageInfo(),
-    getSitePagesContent(),
+    getSitePagesContentAdmin(),
     getAllLeadsAdmin(),
   ]);
 

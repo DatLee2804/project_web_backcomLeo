@@ -20,7 +20,7 @@ import { getLiveBrokers, getSitePagesContent } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Dịch vụ Hoàn phí Forex (Backcom / Rebate)",

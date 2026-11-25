@@ -22,7 +22,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { SITE_CONFIG, constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const indicators = await getLiveIndicators();
+  return indicators.map((i) => ({ slug: i.slug }));
+}
 
 interface IndicatorDetailPageProps {
   params: Promise<{ slug: string }>;

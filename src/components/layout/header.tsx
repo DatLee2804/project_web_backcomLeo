@@ -70,8 +70,25 @@ export function Header() {
     );
   }, [dynamicBrokersNav]);
 
+  const hasInitialFetchRef = React.useRef(false);
+  const prevPathRef = React.useRef<string | null>(null);
+
   React.useEffect(() => {
+    const prevPath = prevPathRef.current;
+    prevPathRef.current = pathname;
+
     if (isAdminRoute) return;
+
+    const cameFromAuthPage =
+      prevPath === "/login" ||
+      prevPath === "/register" ||
+      prevPath?.startsWith("/admin");
+
+    if (hasInitialFetchRef.current && !cameFromAuthPage) {
+      return;
+    }
+
+    hasInitialFetchRef.current = true;
     let active = true;
     fetch("/api/auth/me")
       .then((res) => res.json())

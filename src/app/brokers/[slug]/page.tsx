@@ -4,7 +4,12 @@ import { BrokerDetailTemplate } from "@/components/brokers/broker-detail-templat
 import { getLiveBrokerBySlug, getLiveBrokers } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const brokers = await getLiveBrokers();
+  return brokers.map((b) => ({ slug: b.slug }));
+}
 
 interface BrokerDetailPageProps {
   params: Promise<{ slug: string }>;

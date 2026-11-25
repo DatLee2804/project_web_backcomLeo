@@ -10,7 +10,7 @@ import {
   Info,
   ShieldAlert,
 } from "lucide-react";
-import { getLiveMasterBySlug } from "@/lib/cms";
+import { getLiveMasterBySlug, getLiveMasters } from "@/lib/cms";
 import { MasterCharts } from "@/components/copy-trading/master-charts";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -18,7 +18,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const masters = await getLiveMasters();
+  return masters.map((m) => ({ slug: m.slug }));
+}
 
 interface MasterDetailPageProps {
   params: Promise<{ slug: string }>;

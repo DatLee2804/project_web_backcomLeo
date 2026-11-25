@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getAdminSession } from "@/lib/auth";
-import { getSitePagesContent, saveSitePagesContent } from "@/lib/cms";
+import { getSitePagesContentAdmin, saveSitePagesContent } from "@/lib/cms";
 import type { SitePagesContent } from "@/types";
 
 export async function GET() {
@@ -9,7 +9,7 @@ export async function GET() {
   if (!session.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const content = await getSitePagesContent();
+  const content = await getSitePagesContentAdmin();
   return NextResponse.json({ content });
 }
 

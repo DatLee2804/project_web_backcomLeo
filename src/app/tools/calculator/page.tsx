@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { getLiveBrokers } from "@/lib/cms";
 import { constructMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Công cụ Tính Backcom & Khối lượng Giao dịch (Trading Calculator)",

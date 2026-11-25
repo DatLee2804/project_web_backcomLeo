@@ -16,7 +16,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { constructMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = constructMetadata({
   title: "Bot Trading & Giải pháp Expert Advisor (EA MT5)",
