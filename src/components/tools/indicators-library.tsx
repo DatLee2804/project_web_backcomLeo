@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { tradingIndicators as seedIndicators } from "@/data/indicators";
 import type { TradingIndicator } from "@/types";
+import { ProductCoverFrame } from "@/components/shared/product-cover-frame";
 import { Tabs, type TabOption } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { InteractiveCard } from "@/components/ui/card";
@@ -59,14 +59,12 @@ export function IndicatorsLibrary({
           >
             <Link
               href={`/tools/indicators/${ind.slug}`}
-              className="block border-b border-line bg-[#050D1A] p-4 transition-opacity hover:opacity-95"
+              className="group block border-b border-line bg-[#050D1A] p-3.5 transition-opacity hover:opacity-95"
             >
-              <Image
+              <ProductCoverFrame
                 src={ind.previewImage}
                 alt={`Hình minh họa chỉ báo ${ind.name}`}
-                width={480}
-                height={280}
-                className="h-48 w-full rounded-xl object-cover"
+                className="border-0 bg-transparent p-0"
               />
             </Link>
 

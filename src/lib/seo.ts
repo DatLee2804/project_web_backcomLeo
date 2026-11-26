@@ -7,6 +7,8 @@ export const SITE_CONFIG = {
   domain: "https://backcommrleo.com.vn",
   locale: "vi_VN",
   zaloGroupUrl: "https://zalo.me/g/tnhicz815",
+  zaloPersonalUrl: "https://zalo.me/0938323830",
+  zaloPhone: "0938.323.830",
   bcrPortalLoginUrl: "https://thebcr.com/portal/sign-in?lang=en-us&tenantId=10000",
   description:
     "Hệ sinh thái hỗ trợ trader tối ưu chi phí giao dịch Forex thông qua hoàn phí (Backcom/Rebate), kết nối sàn giao dịch, Trading Tools, Robot EA và Copy Trade.",

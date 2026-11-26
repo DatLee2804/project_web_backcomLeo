@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 import {
   AlertTriangle,
@@ -14,6 +13,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { getLiveIndicatorBySlug, getLiveIndicators } from "@/lib/cms";
+import { ProductCoverFrame } from "@/components/shared/product-cover-frame";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { ShowcaseGallerySection } from "@/components/shared/showcase-gallery-section";
 import { Accordion } from "@/components/ui/accordion";
@@ -123,15 +123,11 @@ export default async function IndicatorDetailPage({
             </div>
 
             <div className="lg:col-span-5">
-              <div className="tech-glass-panel overflow-hidden rounded-card-lg border border-gold/40 p-3 shadow-gold">
-                <Image
-                  src={indicator.previewImage}
-                  alt={`Giao diện minh họa chỉ báo ${indicator.name}`}
-                  width={480}
-                  height={280}
-                  className="w-full rounded-xl border border-line object-cover"
-                />
-              </div>
+              <ProductCoverFrame
+                src={indicator.previewImage}
+                alt={`Giao diện minh họa chỉ báo ${indicator.name}`}
+                outerGlow
+              />
             </div>
           </div>
         </div>

@@ -56,11 +56,15 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                 </h2>
               </div>
               <p className="mt-2.5 text-sm leading-relaxed text-ink-secondary">
-                Tham gia trực tiếp Cộng đồng Zalo chính thức của Backcom Mr Leo
-                để kết nối với quản trị viên và nhận hỗ trợ theo thời gian thực.
+                Kết nối trực tiếp qua Zalo cá nhân của Mr Leo (
+                <strong className="text-gold-light">
+                  {SITE_CONFIG.zaloPhone}
+                </strong>
+                ) để được tư vấn mở tài khoản, chuyển mã IB và kích hoạt công cụ
+                theo thời gian thực.
               </p>
               <a
-                href={SITE_CONFIG.zaloGroupUrl}
+                href={SITE_CONFIG.zaloPersonalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
@@ -68,7 +72,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                   "mt-5 w-full"
                 )}
               >
-                Mở Nhóm Zalo Chính thức
+                Nhắn Zalo Hỗ trợ ({SITE_CONFIG.zaloPhone})
                 <ExternalLink className="h-4 w-4" />
               </a>
             </Card>

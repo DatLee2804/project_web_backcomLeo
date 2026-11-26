@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 import {
   AlertTriangle,
@@ -13,6 +12,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { getLiveRobotBySlug, getLiveRobots } from "@/lib/cms";
+import { ProductCoverFrame } from "@/components/shared/product-cover-frame";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { ShowcaseGallerySection } from "@/components/shared/showcase-gallery-section";
 import { Accordion } from "@/components/ui/accordion";
@@ -114,12 +114,10 @@ export default async function RobotDetailPage({
             </div>
 
             <div className="lg:col-span-5">
-              <Image
+              <ProductCoverFrame
                 src={robot.heroImage}
                 alt={`Giao diện minh họa ${robot.name}`}
-                width={640}
-                height={400}
-                className="w-full rounded-card border border-gold/35 shadow-gold"
+                outerGlow
               />
             </div>
           </div>

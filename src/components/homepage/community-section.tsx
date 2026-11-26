@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, MessageCircle, ShieldCheck, Users } from "lucide-react";
 import { defaultSitePagesContent } from "@/data/site-pages";
 import type { HomePageCmsContent } from "@/types";
+import { ProductCoverFrame } from "@/components/shared/product-cover-frame";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -80,12 +80,9 @@ export function CommunitySection({
             </div>
 
             <div className="lg:col-span-5">
-              <Image
+              <ProductCoverFrame
                 src={comm.imageUrl || "/images/community/community-network.svg"}
                 alt={comm.title}
-                width={560}
-                height={360}
-                className="w-full rounded-card border border-line object-cover"
               />
             </div>
           </div>

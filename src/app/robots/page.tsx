@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   AlertTriangle,
   ArrowRight,
@@ -9,6 +8,7 @@ import {
   Server,
 } from "lucide-react";
 import { getLiveRobots } from "@/lib/cms";
+import { ProductCoverFrame } from "@/components/shared/product-cover-frame";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -88,12 +88,10 @@ export default async function RobotsPage() {
               >
                 <div className="grid items-center gap-10 lg:grid-cols-12">
                   <div className="lg:col-span-6">
-                    <Image
+                    <ProductCoverFrame
                       src={bot.heroImage}
                       alt={`Giao diện minh họa ${bot.name}`}
-                      width={640}
-                      height={400}
-                      className="w-full rounded-card border border-line"
+                      outerGlow
                     />
                   </div>
 

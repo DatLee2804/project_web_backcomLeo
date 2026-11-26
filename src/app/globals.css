@@ -115,6 +115,34 @@
   .animate-marquee-track:hover {
     animation-play-state: paused;
   }
+
+  .showcase-edge-mask {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 5%,
+      black 95%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 5%,
+      black 95%,
+      transparent 100%
+    );
+  }
+
+  .animate-showcase-marquee {
+    display: flex;
+    width: max-content;
+    animation: broker-marquee 34s linear infinite;
+    will-change: transform;
+  }
+
+  .animate-showcase-marquee:hover {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes broker-marquee {
