@@ -378,7 +378,7 @@ export function RobotsManager({
                 setEditing((prev) => (prev ? { ...prev, heroImage: url } : null))
               }
               folder="robots"
-              helperText="Tải ảnh chụp giao diện Bot trên MT5 từ máy tính hoặc dán link URL."
+              helperText="Khung chuẩn 16:9 ngang (ví dụ 1280×720 hoặc 1920×1080) — tự động căn vừa khung chuẩn không viền."
             />
 
             <div className="grid gap-4 sm:grid-cols-2">

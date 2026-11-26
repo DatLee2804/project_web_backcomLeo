@@ -123,11 +123,13 @@ export default async function IndicatorDetailPage({
             </div>
 
             <div className="lg:col-span-5">
-              <ProductCoverFrame
-                src={indicator.previewImage}
-                alt={`Giao diện minh họa chỉ báo ${indicator.name}`}
-                outerGlow
-              />
+              <div className="mx-auto max-w-[460px] lg:ml-auto lg:mr-0">
+                <ProductCoverFrame
+                  src={indicator.previewImage}
+                  alt={`Giao diện minh họa chỉ báo ${indicator.name}`}
+                  className="shadow-[0_20px_50px_rgba(0,0,0,0.65)]"
+                />
+              </div>
             </div>
           </div>
         </div>

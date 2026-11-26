@@ -398,7 +398,7 @@ export function IndicatorsManager({
                 )
               }
               folder="indicators"
-              helperText="Khuyến nghị ảnh ngang tỷ lệ 16:9 hoặc 16:10 (PNG, JPG, WEBP, SVG)."
+              helperText="Khung chuẩn 16:9 ngang (ví dụ 1280×720 hoặc 1920×1080) — tự động căn vừa khung chuẩn không viền."
             />
 
             <div className="grid gap-4 sm:grid-cols-2">

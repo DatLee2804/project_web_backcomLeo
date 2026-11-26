@@ -80,42 +80,53 @@ export default async function RobotsPage() {
             subtitle="Chọn xem chi tiết thông số kỹ thuật, yêu cầu tài khoản và quy trình cài đặt cho từng con Bot."
           />
 
-          <div className="mt-12 space-y-10">
+          <div className="mx-auto mt-10 max-w-5xl space-y-8">
             {tradingRobots.map((bot) => (
               <div
                 key={bot.slug}
-                className="overflow-hidden rounded-card-lg border border-gold/45 bg-card p-6 shadow-gold sm:p-10"
+                className="group overflow-hidden rounded-card-lg border border-line-strong bg-card p-5 transition-colors hover:border-gold/45 sm:p-7"
               >
-                <div className="grid items-center gap-10 lg:grid-cols-12">
-                  <div className="lg:col-span-6">
-                    <ProductCoverFrame
-                      src={bot.heroImage}
-                      alt={`Giao diện minh họa ${bot.name}`}
-                      outerGlow
-                    />
+                <div className="grid items-center gap-6 lg:grid-cols-12 lg:gap-8">
+                  <div className="lg:col-span-5">
+                    <Link
+                      href={`/robots/${bot.slug}`}
+                      className="block overflow-hidden rounded-2xl"
+                    >
+                      <ProductCoverFrame
+                        src={bot.heroImage}
+                        alt={`Giao diện minh họa ${bot.name}`}
+                      />
+                    </Link>
                   </div>
 
-                  <div className="lg:col-span-6">
+                  <div className="lg:col-span-7">
                     <div className="flex flex-wrap gap-2">
                       <Badge variant="featured">{bot.badge}</Badge>
-                      <Badge variant="gold">XAUUSDc • Cent Structure</Badge>
+                      <Badge variant="gold">
+                        {bot.targetSymbols.join(" / ") || "XAUUSDc • Cent"}
+                      </Badge>
                     </div>
 
-                    <h2 className="mt-4 font-heading text-2xl font-bold text-ink-primary sm:text-3xl">
-                      {bot.name}
+                    <h2 className="mt-3 font-heading text-xl font-bold text-ink-primary sm:text-2xl">
+                      <Link
+                        href={`/robots/${bot.slug}`}
+                        className="transition-colors hover:text-gold-light"
+                      >
+                        {bot.name}
+                      </Link>
                     </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-secondary sm:text-base">
+                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-ink-secondary sm:text-sm">
                       {bot.introduction[0]}
                     </p>
 
-                    <ul className="mt-5 space-y-2.5">
-                      {bot.features.map((feat) => (
+                    <ul className="mt-4 space-y-2">
+                      {bot.features.slice(0, 3).map((feat) => (
                         <li
                           key={feat.title}
-                          className="flex items-start gap-2.5 text-sm text-ink-primary"
+                          className="flex items-start gap-2 text-xs text-ink-primary sm:text-[13px]"
                         >
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                          <span>
+                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+                          <span className="line-clamp-2">
                             <strong>{feat.title}:</strong>{" "}
                             <span className="text-ink-secondary">
                               {feat.description}
@@ -125,20 +136,20 @@ export default async function RobotsPage() {
                       ))}
                     </ul>
 
-                    <div className="mt-7 flex flex-wrap gap-3">
+                    <div className="mt-5 flex flex-wrap gap-2.5">
                       <Link
                         href={`/robots/${bot.slug}`}
                         className={cn(
-                          buttonVariants({ variant: "primary", size: "md" })
+                          buttonVariants({ variant: "primary", size: "sm" })
                         )}
                       >
                         Xem chi tiết thông số &amp; Hướng dẫn
-                        <ArrowRight className="h-4 w-4" />
+                        <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
                       <Link
                         href="/contact"
                         className={cn(
-                          buttonVariants({ variant: "outline", size: "md" })
+                          buttonVariants({ variant: "outline", size: "sm" })
                         )}
                       >
                         Liên hệ cấp quyền Bot

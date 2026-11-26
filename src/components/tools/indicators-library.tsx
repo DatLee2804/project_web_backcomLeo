@@ -51,31 +51,31 @@ export function IndicatorsLibrary({
         onChange={setPlatformFilter}
       />
 
-      <div className="mt-8 grid gap-7 md:grid-cols-2">
+      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((ind) => (
           <InteractiveCard
             key={ind.slug}
-            className="flex flex-col overflow-hidden"
+            className="group flex flex-col overflow-hidden"
           >
             <Link
               href={`/tools/indicators/${ind.slug}`}
-              className="group block border-b border-line bg-[#050D1A] p-3.5 transition-opacity hover:opacity-95"
+              className="block overflow-hidden"
             >
               <ProductCoverFrame
                 src={ind.previewImage}
                 alt={`Hình minh họa chỉ báo ${ind.name}`}
-                className="border-0 bg-transparent p-0"
+                className="rounded-none"
               />
             </Link>
 
-            <div className="flex flex-1 flex-col justify-between p-6">
+            <div className="flex flex-1 flex-col justify-between p-5">
               <div>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <Badge variant="gold">{ind.platform}</Badge>
                   <Badge variant="pending">Cấp quyền thành viên</Badge>
                 </div>
 
-                <h3 className="mt-4 font-heading text-xl font-bold text-ink-primary">
+                <h3 className="mt-3.5 font-heading text-lg font-bold text-ink-primary">
                   <Link
                     href={`/tools/indicators/${ind.slug}`}
                     className="transition-colors hover:text-gold-light"
@@ -86,41 +86,41 @@ export function IndicatorsLibrary({
                 <div className="mt-1 text-xs font-medium text-gold-light">
                   Phân nhóm: {ind.category}
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-ink-secondary">
+                <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-ink-secondary sm:text-sm">
                   {ind.summary}
                 </p>
 
-                <ul className="mt-5 space-y-2 border-t border-line pt-4">
+                <ul className="mt-4 space-y-1.5 border-t border-line pt-3.5">
                   {ind.features.slice(0, 3).map((f) => (
                     <li
                       key={f}
                       className="flex items-start gap-2 text-xs text-ink-secondary"
                     >
                       <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
-                      <span>{f}</span>
+                      <span className="line-clamp-2">{f}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-2.5 pt-2">
+              <div className="mt-5 flex flex-wrap gap-2 pt-1">
                 <Link
                   href={`/tools/indicators/${ind.slug}`}
                   className={cn(
-                    buttonVariants({ variant: "primary", size: "md" }),
+                    buttonVariants({ variant: "primary", size: "sm" }),
                     "flex-1"
                   )}
                 >
-                  <span>Xem chi tiết thông số &amp; Hướng dẫn</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <span>Chi tiết &amp; Hướng dẫn</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
                   href="/contact"
                   className={cn(
-                    buttonVariants({ variant: "outline", size: "md" })
+                    buttonVariants({ variant: "outline", size: "sm" })
                   )}
                 >
-                  Đăng ký cấp quyền
+                  Cấp quyền
                 </Link>
               </div>
             </div>

@@ -114,11 +114,13 @@ export default async function RobotDetailPage({
             </div>
 
             <div className="lg:col-span-5">
-              <ProductCoverFrame
-                src={robot.heroImage}
-                alt={`Giao diện minh họa ${robot.name}`}
-                outerGlow
-              />
+              <div className="mx-auto max-w-[460px] lg:ml-auto lg:mr-0">
+                <ProductCoverFrame
+                  src={robot.heroImage}
+                  alt={`Giao diện minh họa ${robot.name}`}
+                  className="shadow-[0_20px_50px_rgba(0,0,0,0.65)]"
+                />
+              </div>
             </div>
           </div>
         </div>
