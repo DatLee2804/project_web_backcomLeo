@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import type { TradingRobot } from "@/types";
+import { GalleryImagesField } from "@/components/admin/gallery-images-field";
 import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -124,6 +125,9 @@ export function RobotsManager({
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean),
+      showcaseGallery: (editing.showcaseGallery ?? []).filter((g) =>
+        Boolean(g.url?.trim())
+      ),
       strategyPoints: editing.strategyPoints.filter((s) => s.title.trim()),
       features: editing.features.filter((f) => f.title.trim()),
       accountRequirements: editing.accountRequirements.filter((r) =>
@@ -437,6 +441,30 @@ export function RobotsManager({
                 />
               </div>
             </div>
+
+            {/* Showcase Gallery (4-6 Images between Intro & Strategy Points) */}
+            <GalleryImagesField
+              folder="robots"
+              titleValue={editing.showcaseTitle ?? ""}
+              subtitleValue={editing.showcaseSubtitle ?? ""}
+              items={editing.showcaseGallery ?? []}
+              onChange={({
+                showcaseTitle,
+                showcaseSubtitle,
+                showcaseGallery,
+              }) =>
+                setEditing((prev) =>
+                  prev
+                    ? {
+                        ...prev,
+                        showcaseTitle,
+                        showcaseSubtitle,
+                        showcaseGallery,
+                      }
+                    : null
+                )
+              }
+            />
 
             {/* Strategy Points Repeater */}
             <div className="space-y-3 rounded-xl border border-line bg-background-secondary/60 p-4">

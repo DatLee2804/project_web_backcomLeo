@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import type { TradingIndicator } from "@/types";
+import { GalleryImagesField } from "@/components/admin/gallery-images-field";
 import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -130,6 +131,9 @@ export function IndicatorsManager({
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean),
+      showcaseGallery: (editing.showcaseGallery ?? []).filter((g) =>
+        Boolean(g.url?.trim())
+      ),
       howItWorks: editing.howItWorks.filter((h) => h.title.trim()),
       parameters: editing.parameters.filter((p) => p.label.trim()),
       installationSteps: editing.installationSteps
@@ -455,6 +459,30 @@ export function IndicatorsManager({
                 />
               </div>
             </div>
+
+            {/* Showcase Gallery (4-6 Images between Intro & How It Works) */}
+            <GalleryImagesField
+              folder="indicators"
+              titleValue={editing.showcaseTitle ?? ""}
+              subtitleValue={editing.showcaseSubtitle ?? ""}
+              items={editing.showcaseGallery ?? []}
+              onChange={({
+                showcaseTitle,
+                showcaseSubtitle,
+                showcaseGallery,
+              }) =>
+                setEditing((prev) =>
+                  prev
+                    ? {
+                        ...prev,
+                        showcaseTitle,
+                        showcaseSubtitle,
+                        showcaseGallery,
+                      }
+                    : null
+                )
+              }
+            />
 
             {/* How It Works Repeater */}
             <div className="space-y-3 rounded-xl border border-line bg-background-secondary/60 p-4">

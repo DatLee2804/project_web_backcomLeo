@@ -34,6 +34,7 @@ yarn-error.log*
 /public/uploads/
 /*.mp4
 /*.webm
+/*.pdf
 
 # vercel
 .vercel

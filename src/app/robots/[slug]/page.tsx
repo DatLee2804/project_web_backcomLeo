@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { getLiveRobotBySlug, getLiveRobots } from "@/lib/cms";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { ShowcaseGallerySection } from "@/components/shared/showcase-gallery-section";
 import { Accordion } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -141,12 +142,24 @@ export default async function RobotDetailPage({
         </div>
       </section>
 
+      {/* 2B. Bot Parameters & Profit Statistics Gallery (4-6 Images) */}
+      <ShowcaseGallerySection
+        eyebrow="02 • BOT PARAMETERS & PROFIT STATISTICS"
+        title={
+          robot.showcaseTitle?.trim() ||
+          `Thông số Cấu hình & Thống kê Lợi nhuận — ${robot.shortName}`
+        }
+        subtitle={robot.showcaseSubtitle}
+        images={robot.showcaseGallery}
+        variant="robot"
+      />
+
       {/* 3 & 4. Trading Strategy + Features */}
       <section className="border-b border-line bg-background-secondary py-14 sm:py-18">
         <div className="container">
           <SectionHeading
             align="left"
-            eyebrow="02 • STRATEGY & ARCHITECTURE"
+            eyebrow="03 • STRATEGY & ARCHITECTURE"
             title="Nguyên lý vận hành & Tính năng kỹ thuật"
           />
 
@@ -291,7 +304,7 @@ export default async function RobotDetailPage({
       >
         <div className="container">
           <SectionHeading
-            eyebrow="03 • SETUP WORKFLOW"
+            eyebrow="04 • SETUP WORKFLOW"
             title={`Quy trình cài đặt ${robot.shortName} trên MT5`}
           />
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">

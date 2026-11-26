@@ -115,6 +115,12 @@ export interface NavItem {
   children?: NavSubItem[];
 }
 
+export interface ShowcaseImageItem {
+  url: string;
+  caption?: string;
+  tag?: string;
+}
+
 export interface TradingRobot {
   slug: string;
   name: string;
@@ -125,6 +131,9 @@ export interface TradingRobot {
   isPublished?: boolean;
   sortOrder?: number;
   heroImage: string;
+  showcaseTitle?: string;
+  showcaseSubtitle?: string;
+  showcaseGallery?: ShowcaseImageItem[];
   supportedPlatforms: string[];
   targetSymbols: string[];
   recommendedAccount: string;
@@ -165,6 +174,9 @@ export interface TradingIndicator {
   summary: string;
   features: string[];
   previewImage: string;
+  showcaseTitle?: string;
+  showcaseSubtitle?: string;
+  showcaseGallery?: ShowcaseImageItem[];
   targetMarkets: string[];
   recommendedTimeframes: string[];
   introduction: string[];
