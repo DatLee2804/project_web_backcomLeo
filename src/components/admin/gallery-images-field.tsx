@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import {
-  ArrowDown,
-  ArrowUp,
+  ArrowLeft,
+  ArrowRight,
   ImagePlus,
   Link2,
   Loader2,
@@ -112,12 +112,7 @@ export function GalleryImagesField({
       for (let i = 0; i < files.length; i++) {
         setUploadingStatus(`Đang tải ảnh ${i + 1}/${files.length}...`);
         const url = await uploadSingleImageDirect(files[i], folder);
-        uploadedItems.push({
-          url,
-          tag:
-            folder === "robots" ? "THỐNG KÊ BOT" : "HIỆU SUẤT THỰC TẾ",
-          caption: "",
-        });
+        uploadedItems.push({ url });
       }
 
       onChange({
@@ -144,10 +139,8 @@ export function GalleryImagesField({
     }
   };
 
-  const updateItem = (index: number, patch: Partial<ShowcaseImageItem>) => {
-    const next = items.map((it, idx) =>
-      idx === index ? { ...it, ...patch } : it
-    );
+  const updateItemUrl = (index: number, url: string) => {
+    const next = items.map((it, idx) => (idx === index ? { url } : it));
     onChange({
       showcaseTitle: titleValue,
       showcaseSubtitle: subtitleValue,
@@ -180,14 +173,7 @@ export function GalleryImagesField({
     onChange({
       showcaseTitle: titleValue,
       showcaseSubtitle: subtitleValue,
-      showcaseGallery: [
-        ...items,
-        {
-          url: "",
-          tag: folder === "robots" ? "THÔNG SỐ BOT" : "THỐNG KÊ HIỆU SUẤT",
-          caption: "",
-        },
-      ],
+      showcaseGallery: [...items, { url: "" }],
     });
   };
 
@@ -196,12 +182,13 @@ export function GalleryImagesField({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <span className="text-xs font-extrabold uppercase tracking-wider text-gold-light">
-            Thư viện Ảnh Thông số &amp; Thống kê Lợi nhuận (Khuyến nghị 4–6 ảnh)
+            Thư viện Hình ảnh Thông số &amp; Lợi nhuận (Thuần Hình ảnh • 4–6 tấm)
           </span>
           <p className="mt-1 text-xs text-ink-secondary">
-            Hiển thị ngay giữa mục <strong>Giới thiệu tổng quan</strong> và{" "}
-            <strong>Nguyên lý vận hành</strong>. Bạn có thể bôi đen chọn 4–6 tấm
-            ảnh tải lên cùng lúc!
+            Hiển thị thuần hình ảnh sắc nét ngay giữa mục{" "}
+            <strong>Giới thiệu tổng quan</strong> và{" "}
+            <strong>Nguyên lý vận hành</strong>. Bôi đen chọn 4–6 ảnh tải lên 1
+            lần!
           </p>
         </div>
 
@@ -247,50 +234,6 @@ export function GalleryImagesField({
         </div>
       </div>
 
-      {/* Optional Custom Heading */}
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold uppercase text-ink-muted">
-            Tiêu đề mục Thống kê (Để trống sẽ dùng mặc định đẹp sẵn)
-          </label>
-          <input
-            type="text"
-            value={titleValue}
-            onChange={(e) =>
-              onChange({
-                showcaseTitle: e.target.value,
-                showcaseSubtitle: subtitleValue,
-                showcaseGallery: items,
-              })
-            }
-            placeholder={
-              folder === "robots"
-                ? "Thông số Cấu hình Bot & Thống kê Lợi nhuận Thực tế"
-                : "Thống kê Hiệu suất & Hình ảnh Tín hiệu Thực tế"
-            }
-            className="h-9 w-full rounded-lg border border-line-strong bg-background-secondary px-3 text-xs text-ink-primary focus:border-gold focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold uppercase text-ink-muted">
-            Mô tả ngắn dưới tiêu đề (Tùy chọn)
-          </label>
-          <input
-            type="text"
-            value={subtitleValue}
-            onChange={(e) =>
-              onChange({
-                showcaseTitle: titleValue,
-                showcaseSubtitle: e.target.value,
-                showcaseGallery: items,
-              })
-            }
-            placeholder="Tổng hợp ảnh chụp thông số cài đặt, lịch sử lệnh và thống kê lợi nhuận..."
-            className="h-9 w-full rounded-lg border border-line-strong bg-background-secondary px-3 text-xs text-ink-primary focus:border-gold focus:outline-none"
-          />
-        </div>
-      </div>
-
       {error && (
         <div className="rounded-lg border border-danger/35 bg-danger-muted px-3 py-2 text-xs text-danger">
           {error}
@@ -298,60 +241,39 @@ export function GalleryImagesField({
       )}
 
       {items.length > 0 ? (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, idx) => (
             <div
               key={idx}
-              className="flex flex-col gap-2.5 rounded-xl border border-line bg-card p-3"
+              className="flex flex-col gap-2 rounded-xl border border-line bg-card p-2.5"
             >
-              <div className="flex items-start gap-3">
-                <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg border border-line bg-[#030811]">
-                  {item.url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.url}
-                      alt={item.caption || `Ảnh #${idx + 1}`}
-                      className="h-full w-full object-contain"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-[10px] text-ink-muted">
-                      Chưa có URL
-                    </div>
-                  )}
-                  <span className="absolute left-1.5 top-1.5 rounded bg-[#040B16]/90 px-1.5 py-0.5 text-[10px] font-bold text-gold-light">
-                    0{idx + 1}
-                  </span>
-                </div>
-
-                <div className="flex-1 space-y-2">
-                  <input
-                    type="text"
-                    value={item.tag ?? ""}
-                    onChange={(e) => updateItem(idx, { tag: e.target.value })}
-                    placeholder="Nhãn góc (VD: THÔNG SỐ BOT, LỢI NHUẬN THÁNG 10)"
-                    className="h-8 w-full rounded-lg border border-line-strong bg-background-secondary px-2.5 text-xs text-gold-light focus:border-gold focus:outline-none"
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg border border-line bg-[#030811]">
+                {item.url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.url}
+                    alt={`Ảnh #${idx + 1}`}
+                    className="h-full w-full object-contain"
                   />
-                  <input
-                    type="text"
-                    value={item.caption ?? ""}
-                    onChange={(e) =>
-                      updateItem(idx, { caption: e.target.value })
-                    }
-                    placeholder="Chú thích hiển thị dưới ảnh (Tùy chọn)"
-                    className="h-8 w-full rounded-lg border border-line-strong bg-background-secondary px-2.5 text-xs text-ink-primary focus:border-gold focus:outline-none"
-                  />
-                </div>
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-[11px] text-ink-muted">
+                    Dán link ảnh bên dưới
+                  </div>
+                )}
+                <span className="absolute left-2 top-2 rounded bg-[#040B16]/90 px-2 py-0.5 text-[10px] font-bold text-gold-light">
+                  0{idx + 1}
+                </span>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <div className="relative flex-1">
-                  <Link2 className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-muted" />
+                  <Link2 className="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-ink-muted" />
                   <input
                     type="text"
                     value={item.url}
-                    onChange={(e) => updateItem(idx, { url: e.target.value })}
-                    placeholder="https://... đường dẫn ảnh"
-                    className="h-8 w-full rounded-lg border border-line bg-background-secondary pl-8 pr-2 text-[11px] text-ink-secondary focus:border-gold focus:outline-none"
+                    onChange={(e) => updateItemUrl(idx, e.target.value)}
+                    placeholder="https://..."
+                    className="h-7 w-full rounded border border-line bg-background-secondary pl-6 pr-2 text-[11px] text-ink-secondary focus:border-gold focus:outline-none"
                   />
                 </div>
 
@@ -359,25 +281,25 @@ export function GalleryImagesField({
                   type="button"
                   disabled={idx === 0}
                   onClick={() => moveItem(idx, -1)}
-                  title="Đẩy lên trước"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-line bg-background-secondary text-ink-secondary hover:text-gold-light disabled:opacity-35"
+                  title="Đổi lên trước"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded border border-line bg-background-secondary text-ink-secondary hover:text-gold-light disabled:opacity-35"
                 >
-                  <ArrowUp className="h-3.5 w-3.5" />
+                  <ArrowLeft className="h-3.5 w-3.5" />
                 </button>
                 <button
                   type="button"
                   disabled={idx === items.length - 1}
                   onClick={() => moveItem(idx, 1)}
-                  title="Đẩy xuống sau"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-line bg-background-secondary text-ink-secondary hover:text-gold-light disabled:opacity-35"
+                  title="Đổi ra sau"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded border border-line bg-background-secondary text-ink-secondary hover:text-gold-light disabled:opacity-35"
                 >
-                  <ArrowDown className="h-3.5 w-3.5" />
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </button>
                 <button
                   type="button"
                   onClick={() => removeItem(idx)}
-                  title="Xóa ảnh này"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-danger/30 bg-danger-muted text-danger hover:bg-danger/20"
+                  title="Xóa ảnh"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded border border-danger/30 bg-danger-muted text-danger hover:bg-danger/20"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
@@ -387,9 +309,10 @@ export function GalleryImagesField({
         </div>
       ) : (
         <div className="rounded-xl border border-dashed border-line-strong bg-background-secondary/50 px-4 py-5 text-center text-xs text-ink-muted">
-          Chưa có ảnh thống kê/thông số nào được tải lên. Bấm{" "}
+          Chưa có ảnh nào. Bấm{" "}
           <strong className="text-gold-light">Chọn tải nhiều ảnh từ máy</strong>{" "}
-          để đăng 4–6 tấm ảnh lợi nhuận hoặc bảng thông số cùng lúc.
+          để tải 4–6 tấm ảnh thống kê/lợi nhuận hiển thị thuần hình ảnh ngoài
+          trang.
         </div>
       )}
     </div>

@@ -2,13 +2,9 @@
 
 import * as React from "react";
 import {
-  BarChart3,
   ChevronLeft,
   ChevronRight,
   ImageIcon,
-  Layers,
-  ShieldCheck,
-  Sliders,
   X,
   ZoomIn,
 } from "lucide-react";
@@ -24,37 +20,6 @@ interface ShowcaseGallerySectionProps {
   images?: ShowcaseImageItem[];
   variant?: "indicator" | "robot";
 }
-
-const DEFAULT_PLACEHOLDER_SLOTS = [
-  {
-    code: "01",
-    tag: "THÔNG SỐ CẤU HÌNH",
-    title: "Bảng thông số & Input thực tế",
-    desc: "Hiển thị ảnh chụp cấu hình thông số chuẩn do đội ngũ IB Mr Leo thiết lập.",
-    icon: Sliders,
-  },
-  {
-    code: "02",
-    tag: "THỐNG KÊ LỢI NHUẬN",
-    title: "Kết quả vận hành & Tăng trưởng",
-    desc: "Ảnh chụp báo cáo thống kê lợi nhuận, tỷ lệ thắng và mức sụt giảm vốn thực tế.",
-    icon: BarChart3,
-  },
-  {
-    code: "03",
-    tag: "BIỂU ĐỒ TÍN HIỆU",
-    title: "Điểm vào lệnh & Quản lý vị thế",
-    desc: "Minh họa trực quan lịch sử khớp lệnh và các vùng Entry / SL / TP trên biểu đồ.",
-    icon: Layers,
-  },
-  {
-    code: "04",
-    tag: "ĐỐI SOÁT TÀI KHOẢN",
-    title: "Lịch sử giao dịch xác thực",
-    desc: "Cập nhật định kỳ từ tài khoản vận hành thực tế trong hệ sinh thái Backcom Mr Leo.",
-    icon: ShieldCheck,
-  },
-];
 
 export function ShowcaseGallerySection({
   eyebrow = "02 • PERFORMANCE & PARAMETER SHOWCASE",
@@ -93,10 +58,10 @@ export function ShowcaseGallerySection({
 
   const defaultSubtitle =
     variant === "robot"
-      ? "Hình ảnh thông số cài đặt chuẩn, biểu đồ tăng trưởng vốn và thống kê lịch sử lợi nhuận thực chiến được cập nhật từ hệ thống IB Mr Leo."
+      ? "Hình ảnh thông số cài đặt chuẩn, biểu đồ tăng trưởng vốn và thống kê lịch sử lợi nhuận thực chiến từ hệ thống IB Mr Leo."
       : "Tổng hợp hình ảnh thông số kỹ thuật, kết quả tín hiệu trên biểu đồ và thống kê hiệu suất thực chiến từ đội ngũ IB Mr Leo.";
 
-  // Smart 6-column Bento span calculation so 1, 2, 3, 4, 5, or 6+ photos always balance symmetrically
+  // Symmetric 6-column Bento span calculation for 1..6+ pure image frames
   const getColSpanClass = (index: number, total: number): string => {
     if (total === 1) return "lg:col-span-6 max-w-4xl mx-auto w-full";
     if (total === 2) return "sm:col-span-1 lg:col-span-3";
@@ -127,25 +92,27 @@ export function ShowcaseGallerySection({
           />
           {validImages.length > 0 && (
             <Badge variant="gold" className="shrink-0">
-              {validImages.length} HÌNH ẢNH THỰC TẾ • NHẤN ĐỂ PHÓNG TO
+              {validImages.length} HÌNH ẢNH • NHẤN ĐỂ PHÓNG TO
             </Badge>
           )}
         </div>
 
         {validImages.length > 0 ? (
+          /* Pure Image-Only Showcase Grid (Zero text below images) */
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
             {validImages.map((img, idx) => (
               <button
                 key={`${img.url}-${idx}`}
                 type="button"
                 onClick={() => setLightboxIndex(idx)}
+                aria-label={`Phóng to hình ảnh thống kê ${idx + 1}`}
                 className={cn(
-                  "tech-glass-panel group relative flex flex-col overflow-hidden rounded-2xl border border-line-strong bg-[#061224]/90 p-2.5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-gold/65 hover:shadow-[0_18px_45px_rgba(0,0,0,0.85),0_0_26px_rgba(0,194,255,0.22)] focus:outline-none",
+                  "tech-glass-panel group relative overflow-hidden rounded-2xl border border-line-strong bg-[#061224]/90 p-2 transition-all duration-300 hover:-translate-y-1 hover:border-gold/65 hover:shadow-[0_18px_45px_rgba(0,0,0,0.85),0_0_26px_rgba(0,194,255,0.22)] focus:outline-none",
                   getColSpanClass(idx, validImages.length)
                 )}
               >
                 <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-line bg-[#030811]">
-                  {/* Ambient blurred backdrop so vertical mobile profit screenshots never leave empty black bars */}
+                  {/* Ambient blurred backdrop so vertical mobile profit screenshots look seamless */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={img.url}
@@ -154,89 +121,46 @@ export function ShowcaseGallerySection({
                     className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover opacity-25 blur-xl"
                   />
 
-                  {/* Crisp uncropped foreground screenshot */}
+                  {/* Pure crisp uncropped foreground screenshot */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={img.url}
-                    alt={
-                      img.caption ||
-                      `Hình ảnh thống kê & thông số #${idx + 1}`
-                    }
+                    alt={`Hình ảnh thực tế #${idx + 1}`}
                     loading="lazy"
                     className="relative z-10 h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                   />
 
-                  {/* Top Badges Overlay */}
-                  <div className="pointer-events-none absolute inset-x-3 top-3 z-20 flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-[#040B16]/85 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-gold-light backdrop-blur-md">
-                      <span>0{idx + 1}</span>
-                      {img.tag && (
-                        <>
-                          <span className="text-gold/50">•</span>
-                          <span>{img.tag}</span>
-                        </>
-                      )}
-                    </span>
-
-                    <span className="inline-flex items-center gap-1 rounded-full border border-line-strong bg-[#040B16]/85 px-2.5 py-1 text-[10px] font-semibold text-ink-primary opacity-80 backdrop-blur-md transition-all group-hover:border-gold group-hover:text-gold-light group-hover:opacity-100">
-                      <ZoomIn className="h-3 w-3" />
-                      <span className="hidden sm:inline">Phóng to</span>
-                    </span>
-                  </div>
+                  {/* Minimal hover zoom icon only */}
+                  <span className="pointer-events-none absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full border border-line-strong bg-[#040B16]/80 text-ink-primary opacity-0 backdrop-blur-md transition-all duration-200 group-hover:border-gold group-hover:text-gold-light group-hover:opacity-100">
+                    <ZoomIn className="h-4 w-4" />
+                  </span>
                 </div>
-
-                {img.caption && (
-                  <div className="px-2 pt-3 pb-1">
-                    <p className="line-clamp-2 text-xs font-medium leading-relaxed text-ink-primary sm:text-sm">
-                      {img.caption}
-                    </p>
-                  </div>
-                )}
               </button>
             ))}
           </div>
         ) : (
-          /* Sleek 4-Slot Ready State before IB Leo uploads photos in Admin */
+          /* Pure Image-Frame Placeholders (Zero text paragraphs underneath) */
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {DEFAULT_PLACEHOLDER_SLOTS.map((slot) => {
-              const Icon = slot.icon;
-              return (
-                <div
-                  key={slot.code}
-                  className="tech-glass-panel relative flex flex-col justify-between overflow-hidden rounded-2xl border border-dashed border-line-strong bg-[#061224]/75 p-5"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="rounded-full border border-gold/35 bg-gold/10 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-gold-light">
-                        {slot.code} • {slot.tag}
-                      </span>
-                      <ImageIcon className="h-4 w-4 text-ink-muted" />
-                    </div>
-
-                    <div className="my-6 flex h-28 flex-col items-center justify-center rounded-xl border border-line bg-[#040A14]/90 p-4 text-center">
-                      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/35 bg-gold/10 text-gold-light">
-                        <Icon className="h-5 w-5" />
-                      </span>
-                      <span className="mt-2.5 text-[11px] font-semibold text-ink-secondary">
-                        Đang cập nhật ảnh thực tế
-                      </span>
-                    </div>
-
-                    <h3 className="font-heading text-sm font-bold text-ink-primary">
-                      {slot.title}
-                    </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-ink-secondary">
-                      {slot.desc}
-                    </p>
-                  </div>
+            {[1, 2, 3, 4].map((slotNum) => (
+              <div
+                key={slotNum}
+                className="tech-glass-panel overflow-hidden rounded-2xl border border-dashed border-line-strong bg-[#061224]/70 p-2"
+              >
+                <div className="flex aspect-[16/10] w-full flex-col items-center justify-center rounded-xl border border-line bg-[#040A14]/90">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/30 bg-gold/10 text-gold-light/80">
+                    <ImageIcon className="h-5 w-5" />
+                  </span>
+                  <span className="mt-2.5 text-[11px] font-medium text-ink-muted">
+                    Đang cập nhật hình ảnh
+                  </span>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         )}
       </div>
 
-      {/* Interactive Fullscreen Lightbox Modal */}
+      {/* Interactive Fullscreen Lightbox Modal (Pure Image View) */}
       {lightboxIndex !== null && validImages[lightboxIndex] && (
         <div
           role="dialog"
@@ -249,16 +173,9 @@ export function ShowcaseGallerySection({
             onClick={(e) => e.stopPropagation()}
             className="flex w-full max-w-6xl items-center justify-between gap-4"
           >
-            <div className="flex items-center gap-2.5">
-              <Badge variant="gold">
-                ẢNH {lightboxIndex + 1} / {validImages.length}
-              </Badge>
-              {validImages[lightboxIndex].tag && (
-                <span className="text-xs font-bold uppercase tracking-wider text-gold-light">
-                  {validImages[lightboxIndex].tag}
-                </span>
-              )}
-            </div>
+            <Badge variant="gold">
+              {lightboxIndex + 1} / {validImages.length}
+            </Badge>
 
             <button
               type="button"
@@ -273,7 +190,7 @@ export function ShowcaseGallerySection({
           {/* Main Image Stage */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative my-auto flex max-h-[74vh] w-full max-w-6xl items-center justify-center"
+            className="relative my-auto flex max-h-[78vh] w-full max-w-6xl items-center justify-center"
           >
             {validImages.length > 1 && (
               <button
@@ -294,11 +211,8 @@ export function ShowcaseGallerySection({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={validImages[lightboxIndex].url}
-              alt={
-                validImages[lightboxIndex].caption ||
-                `Ảnh thống kê #${lightboxIndex + 1}`
-              }
-              className="max-h-[72vh] w-auto max-w-full rounded-2xl border border-line-strong bg-[#040A14] object-contain shadow-2xl"
+              alt={`Hình ảnh thực tế #${lightboxIndex + 1}`}
+              className="max-h-[76vh] w-auto max-w-full rounded-2xl border border-line-strong bg-[#040A14] object-contain shadow-2xl"
             />
 
             {validImages.length > 1 && (
@@ -315,17 +229,11 @@ export function ShowcaseGallerySection({
             )}
           </div>
 
-          {/* Bottom Caption & Thumbnail Strip */}
+          {/* Bottom Thumbnail Strip */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-4xl space-y-3 text-center"
+            className="w-full max-w-4xl text-center"
           >
-            {validImages[lightboxIndex].caption && (
-              <p className="text-xs font-medium text-ink-primary sm:text-sm">
-                {validImages[lightboxIndex].caption}
-              </p>
-            )}
-
             {validImages.length > 1 && (
               <div className="flex items-center justify-center gap-2 overflow-x-auto py-1">
                 {validImages.map((thumb, tIdx) => (
