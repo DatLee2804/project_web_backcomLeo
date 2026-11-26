@@ -170,30 +170,20 @@ export function BrokersExplorer({
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-2.5 pt-2">
-              <Link
-                href={`/brokers/${broker.slug}`}
-                className={cn(
-                  buttonVariants({
-                    variant: broker.featured ? "primary" : "outline",
-                    size: "sm",
-                  }),
-                  "flex-1"
-                )}
-              >
-                Chi tiết sàn
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-
               {broker.referralUrl ? (
                 <a
                   href={broker.referralUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    buttonVariants({ variant: "secondary", size: "sm" })
+                    buttonVariants({
+                      variant: "primary",
+                      size: "sm",
+                    }),
+                    "flex-1"
                   )}
                 >
-                  Đăng ký
+                  Mở tài khoản
                   <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               ) : (
@@ -203,13 +193,26 @@ export function BrokersExplorer({
                   title="Đường dẫn referral đang chờ cập nhật"
                   className={cn(
                     buttonVariants({ variant: "subtle", size: "sm" }),
-                    "cursor-not-allowed opacity-60"
+                    "flex-1 cursor-not-allowed opacity-60"
                   )}
                 >
                   <Lock className="h-3 w-3" />
                   Chờ link
                 </button>
               )}
+
+              <Link
+                href={`/brokers/${broker.slug}`}
+                className={cn(
+                  buttonVariants({
+                    variant: "outline",
+                    size: "sm",
+                  })
+                )}
+              >
+                Chi tiết
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </InteractiveCard>
         ))}
@@ -277,13 +280,26 @@ export function BrokersExplorer({
                     {broker.rebateTableLabel || "Liên hệ / Đang cập nhật"}
                   </td>
                   <td className="px-5 py-4 text-right">
-                    <Link
-                      href={`/brokers/${broker.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-gold-light hover:underline"
-                    >
-                      Xem chi tiết
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
+                    <div className="inline-flex items-center justify-end gap-3">
+                      {broker.referralUrl && (
+                        <a
+                          href={broker.referralUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 rounded-lg bg-gold-gradient px-2.5 py-1 text-xs font-bold text-[#020813] transition-transform hover:scale-105"
+                        >
+                          Mở TK
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
+                      <Link
+                        href={`/brokers/${broker.slug}`}
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-gold-light hover:underline"
+                      >
+                        Chi tiết
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}

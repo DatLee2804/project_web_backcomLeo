@@ -32,6 +32,8 @@ yarn-error.log*
 # local dev cms fallback data & uploads
 /data/local-cms-db.json
 /public/uploads/
+/*.mp4
+/*.webm
 
 # vercel
 .vercel

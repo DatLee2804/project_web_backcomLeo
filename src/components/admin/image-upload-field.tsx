@@ -44,6 +44,58 @@ export function ImageUploadField({
     setError(null);
 
     try {
+      // 1. Request a Direct-to-Supabase Signed Upload URL (avoids Vercel 4.5MB Serverless body limit)
+      const signRes = await fetch("/api/admin/upload?intent=sign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          folder,
+          mimeType: file.type,
+          size: file.size,
+        }),
+      });
+
+      const signJson = (await signRes.json()) as {
+        strategy?: "supabase-signed" | "local-form";
+        signedUrl?: string;
+        publicUrl?: string;
+        error?: string;
+      };
+
+      if (!signRes.ok) {
+        setError(signJson.error || "Không thể khởi tạo phiên tải tệp.");
+        return;
+      }
+
+      if (
+        signJson.strategy === "supabase-signed" &&
+        signJson.signedUrl &&
+        signJson.publicUrl
+      ) {
+        const rawBytes = await file.arrayBuffer();
+        const directUploadRes = await fetch(signJson.signedUrl, {
+          method: "PUT",
+          headers: {
+            "content-type": file.type,
+            "cache-control": "max-age=3600",
+            "x-upsert": "false",
+          },
+          body: rawBytes,
+        });
+
+        if (!directUploadRes.ok) {
+          const errText = await directUploadRes.text().catch(() => "");
+          setError(
+            `Tải trực tiếp lên Supabase Storage thất bại (${directUploadRes.status}): ${errText || "Vui lòng kiểm tra Bucket 'media' trên Supabase."}`
+          );
+          return;
+        }
+
+        onChange(signJson.publicUrl);
+        return;
+      }
+
+      // 2. Local Development FormData upload fallback
       const formData = new FormData();
       formData.append("file", file);
       formData.append("folder", folder);

@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Calculator,
   CheckCircle2,
+  ExternalLink,
   Info,
   RefreshCw,
   SlidersHorizontal,
@@ -722,10 +723,27 @@ export function BackcomCalculator({
 
           {/* Bottom CTAs */}
           <div className="mt-6 space-y-2.5 border-t border-line pt-5">
+            {selectedBroker.referralUrl && (
+              <a
+                href={selectedBroker.referralUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  buttonVariants({ variant: "primary", size: "md" }),
+                  "w-full"
+                )}
+              >
+                Mở tài khoản {selectedBroker.shortName} (Link IB Leo)
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            )}
             <Link
               href={`/contact?broker=${selectedBroker.slug}`}
               className={cn(
-                buttonVariants({ variant: "primary", size: "md" }),
+                buttonVariants({
+                  variant: selectedBroker.referralUrl ? "outline" : "primary",
+                  size: "md",
+                }),
                 "w-full"
               )}
             >

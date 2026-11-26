@@ -223,15 +223,28 @@ export function FeaturedBrokersSection({
                         1
                       </span>
                       <div className="text-ink-secondary">
-                        Mở tài khoản{" "}
-                        <strong className="text-ink-primary">
-                          {activeBroker.name}
-                        </strong>{" "}
-                        thông qua luồng đối tác của Backcom Mr Leo
+                        {activeBroker.referralUrl ? (
+                          <a
+                            href={activeBroker.referralUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-bold text-gold-light underline underline-offset-2 hover:text-white"
+                          >
+                            Mở tài khoản {activeBroker.name} tại đây
+                          </a>
+                        ) : (
+                          <>
+                            Mở tài khoản{" "}
+                            <strong className="text-ink-primary">
+                              {activeBroker.name}
+                            </strong>
+                          </>
+                        )}{" "}
+                        dưới đường link đối tác IB chính thức của Mr Leo
                         {activeBroker.slug === "austex" && (
                           <span>
                             {" "}
-                            (lựa chọn đúng mã tài khoản mặc định{" "}
+                            (tài khoản mặc định{" "}
                             <strong className="text-gold-light">STD05</strong>).
                           </span>
                         )}
@@ -301,27 +314,16 @@ export function FeaturedBrokersSection({
 
             {/* Action Buttons Row */}
             <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-line pt-5">
-              <Link
-                href={`/brokers/${activeBroker.slug}`}
-                className={cn(
-                  buttonVariants({ variant: "primary", size: "md" })
-                )}
-              >
-                <Sparkles className="h-4 w-4" />
-                View Details ({activeBroker.shortName})
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-
               {activeBroker.referralUrl ? (
                 <a
                   href={activeBroker.referralUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    buttonVariants({ variant: "outline", size: "md" })
+                    buttonVariants({ variant: "primary", size: "md" })
                   )}
                 >
-                  Register Now
+                  Mở tài khoản {activeBroker.shortName}
                   <ExternalLink className="h-4 w-4" />
                 </a>
               ) : (
@@ -335,9 +337,20 @@ export function FeaturedBrokersSection({
                   )}
                 >
                   <Lock className="h-3.5 w-3.5" />
-                  Register Now (Chờ cập nhật link)
+                  Chờ cập nhật link
                 </button>
               )}
+
+              <Link
+                href={`/brokers/${activeBroker.slug}`}
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "md" })
+                )}
+              >
+                <Sparkles className="h-4 w-4 text-gold-light" />
+                Chi tiết sàn {activeBroker.shortName}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
 
               {activeBroker.externalPortal && (
                 <a

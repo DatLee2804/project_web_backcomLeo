@@ -31,7 +31,7 @@ export const defaultSitePagesContent: SitePagesContent = {
       ],
     },
     promoVideo: {
-      videoSrc: null,
+      videoSrc: "/videos/hero-promo.mp4",
       posterSrc: null,
       badge: "PROMO REEL • 9:16",
       title: "Hệ sinh thái Backcom Mr Leo",

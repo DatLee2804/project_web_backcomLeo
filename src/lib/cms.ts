@@ -545,9 +545,26 @@ const LEGACY_DEFAULT_LOGOS: Record<string, string> = {
   "/images/brokers/bcr.svg": "/images/brokers/bcr-logo.png",
 };
 
+const DEFAULT_BROKER_REFERRAL_URLS: Record<string, string> = {
+  austex: "https://crm.austexmarkets.com/#/registration/i/IHsPmNGt",
+  exness: "https://one.toexness.com/a/uh88l3hg",
+  tickmill:
+    "https://my.tickmill.com?utm_campaign=ib_link&utm_content=IB21878722_MT&utm_medium=Open+Account&utm_source=link&lp=https%3a%2f%2fmy.tickmill.com%2fvi%2fsign-up%2f",
+  fxpro: "https://direct-vn.pro/vi/partner/NpoV4phV?platform=web",
+  bcr: "https://thebcrglobal.com/sign-up?code=RACK7PO3W6D&siteId=5&lang=vi-vn",
+};
+
 function normalizeBrokerLogo(broker: Broker): Broker {
-  const upgradedLogo = LEGACY_DEFAULT_LOGOS[broker.logo];
-  return upgradedLogo ? { ...broker, logo: upgradedLogo } : broker;
+  const upgradedLogo = LEGACY_DEFAULT_LOGOS[broker.logo] ?? broker.logo;
+  const fallbackReferral =
+    broker.referralUrl && broker.referralUrl.trim() !== ""
+      ? broker.referralUrl
+      : (DEFAULT_BROKER_REFERRAL_URLS[broker.slug] ?? null);
+  return {
+    ...broker,
+    logo: upgradedLogo,
+    referralUrl: fallbackReferral,
+  };
 }
 
 export async function getAllBrokersAdmin(): Promise<Broker[]> {
@@ -1012,8 +1029,19 @@ export async function getSitePagesContentAdmin(): Promise<SitePagesContent> {
 
     if (!error && data?.payload) {
       const remote = data.payload as Partial<SitePagesContent>;
+      const mergedHome = {
+        ...defaultSitePagesContent.home,
+        ...remote.home,
+        promoVideo: {
+          ...defaultSitePagesContent.home.promoVideo,
+          ...remote.home?.promoVideo,
+          videoSrc:
+            remote.home?.promoVideo?.videoSrc ||
+            defaultSitePagesContent.home.promoVideo.videoSrc,
+        },
+      };
       return {
-        home: { ...defaultSitePagesContent.home, ...remote.home },
+        home: mergedHome,
         backcom: { ...defaultSitePagesContent.backcom, ...remote.backcom },
         brokersPage: {
           ...defaultSitePagesContent.brokersPage,

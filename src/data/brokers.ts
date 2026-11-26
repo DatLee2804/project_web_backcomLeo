@@ -132,7 +132,7 @@ export const brokers: Broker[] = [
     ],
     rebateConfig: brokerRebateConfigs.austex,
     rebateTableLabel: "Cấu hình theo STD05 / Đang cập nhật",
-    referralUrl: null,
+    referralUrl: "https://crm.austexmarkets.com/#/registration/i/IHsPmNGt",
     trustReviews: createPendingTrustReviews("Austex Markets"),
     highlights: [
       "Tài khoản mặc định STD05 (thông số cấu hình Gold Spread: 36)",
@@ -150,7 +150,7 @@ export const brokers: Broker[] = [
         id: "austex-referral",
         question: "Làm thế nào để mở tài khoản Austex Markets dưới mã đối tác?",
         answer:
-          "Hiện tại đường dẫn đăng ký tự động đang được cập nhật cấu hình chính thức. Bạn vui lòng liên hệ trực tiếp đội ngũ Backcom Mr Leo qua trang Liên hệ hoặc nhóm Zalo để nhận hướng dẫn mở đúng mã tài khoản STD05.",
+          "Bạn chỉ cần bấm nút Mở tài khoản Austex trên trang này để đăng ký trực tiếp dưới đường link đối tác IB chính thức của Mr Leo (tài khoản STD05), sau đó gửi ID tài khoản giao dịch cho đội ngũ hỗ trợ để xác nhận kích hoạt Backcom.",
       },
     ],
     status: "pending",
@@ -229,7 +229,7 @@ export const brokers: Broker[] = [
     ],
     rebateConfig: brokerRebateConfigs.exness,
     rebateTableLabel: "Liên hệ / Đang cập nhật",
-    referralUrl: null,
+    referralUrl: "https://one.toexness.com/a/uh88l3hg",
     trustReviews: createPendingTrustReviews("Exness"),
     highlights: [
       "Hỗ trợ đầy đủ nền tảng giao dịch MT4 và MT5",
@@ -314,7 +314,8 @@ export const brokers: Broker[] = [
     ],
     rebateConfig: brokerRebateConfigs.tickmill,
     rebateTableLabel: "Liên hệ / Đang cập nhật",
-    referralUrl: null,
+    referralUrl:
+      "https://my.tickmill.com?utm_campaign=ib_link&utm_content=IB21878722_MT&utm_medium=Open+Account&utm_source=link&lp=https%3a%2f%2fmy.tickmill.com%2fvi%2fsign-up%2f",
     trustReviews: createPendingTrustReviews("Tickmill"),
     highlights: [
       "Tương thích hệ thống chỉ báo và EA trên MT4/MT5",
@@ -399,7 +400,7 @@ export const brokers: Broker[] = [
     ],
     rebateConfig: brokerRebateConfigs.fxpro,
     rebateTableLabel: "Liên hệ / Đang cập nhật",
-    referralUrl: null,
+    referralUrl: "https://direct-vn.pro/vi/partner/NpoV4phV?platform=web",
     trustReviews: createPendingTrustReviews("FxPro"),
     highlights: [
       "Đa dạng hóa danh mục sàn giao dịch cùng MT4/MT5",
@@ -472,7 +473,8 @@ export const brokers: Broker[] = [
     ],
     rebateConfig: brokerRebateConfigs.bcr,
     rebateTableLabel: "Liên hệ / Đang cập nhật",
-    referralUrl: null,
+    referralUrl:
+      "https://thebcrglobal.com/sign-up?code=RACK7PO3W6D&siteId=5&lang=vi-vn",
     externalPortal: {
       loginUrl: SITE_CONFIG.bcrPortalLoginUrl,
       loginLabel: "Đăng nhập Cổng BCR (thebcr.com)",

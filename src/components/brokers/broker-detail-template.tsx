@@ -577,13 +577,29 @@ export function BrokerDetailTemplate({
               hình đối tác hoặc chuyển mã IB cho tài khoản sẵn có.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3.5">
+              {broker.referralUrl && (
+                <a
+                  href={broker.referralUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: "primary", size: "lg" })
+                  )}
+                >
+                  Mở tài khoản {broker.shortName} (Link IB Leo)
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              )}
               <Link
                 href={`/contact?broker=${broker.slug}`}
                 className={cn(
-                  buttonVariants({ variant: "primary", size: "lg" })
+                  buttonVariants({
+                    variant: broker.referralUrl ? "outline" : "primary",
+                    size: "lg",
+                  })
                 )}
               >
-                Yêu cầu hướng dẫn liên kết {broker.shortName}
+                Yêu cầu hướng dẫn chuyển mã IB
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link

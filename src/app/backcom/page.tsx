@@ -4,6 +4,7 @@ import {
   BookOpen,
   CheckCircle2,
   Coins,
+  ExternalLink,
   FileCheck2,
   Scale,
   ShieldAlert,
@@ -226,12 +227,25 @@ export default async function BackcomPage() {
                       </Badge>
                     </td>
                     <td className="px-5 py-4 text-right">
-                      <Link
-                        href={`/brokers/${broker.slug}`}
-                        className="text-xs font-semibold text-gold-light hover:underline"
-                      >
-                        Xem sàn →
-                      </Link>
+                      <div className="inline-flex items-center justify-end gap-3">
+                        {broker.referralUrl && (
+                          <a
+                            href={broker.referralUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 rounded-lg bg-gold-gradient px-2.5 py-1 text-xs font-bold text-[#020813] transition-transform hover:scale-105"
+                          >
+                            Mở TK
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                        <Link
+                          href={`/brokers/${broker.slug}`}
+                          className="text-xs font-semibold text-gold-light hover:underline"
+                        >
+                          Chi tiết →
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}
